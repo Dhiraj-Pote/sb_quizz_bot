@@ -27,6 +27,13 @@ const server = http.createServer((req, res) => {
 
 server.listen(PORT, () => {
   console.log(`🌐 Health check server running on port ${PORT}`);
+}).on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.log(`⚠️  Port ${PORT} is already in use. Health check server disabled.`);
+    console.log(`✅ Bot will still work normally for Telegram!`);
+  } else {
+    console.error('Server error:', err);
+  }
 });
 
 // Setup command and callback handlers
@@ -46,7 +53,11 @@ bot.on('error', (error) => {
 process.on('SIGINT', () => {
   console.log('\nShutting down bot...');
   bot.stopPolling();
-  server.close();
+  try {
+    server.close();
+  } catch (e) {
+    // Server might not be running
+  }
   closeDatabase();
   process.exit(0);
 });
@@ -54,7 +65,11 @@ process.on('SIGINT', () => {
 process.on('SIGTERM', () => {
   console.log('\nShutting down bot...');
   bot.stopPolling();
-  server.close();
+  try {
+    server.close();
+  } catch (e) {
+    // Server might not be running
+  }
   closeDatabase();
   process.exit(0);
 });

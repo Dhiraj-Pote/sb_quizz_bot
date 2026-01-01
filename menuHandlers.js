@@ -1,16 +1,15 @@
 // Menu and UI handlers
 const { getQuiz, getAvailableQuizzes } = require('./quizData');
 const { hasUserAttempted, getLeaderboard, getUserResult } = require('./database');
-const { getShareableLink, escapeMarkdown } = require('./utils');
+const { getShareableLink, escapeHtml } = require('./utils');
 
 async function showMainMenu(bot, chatId) {
   const quizzes = getAvailableQuizzes();
   
-  let menuText = `🎯 *Welcome to the Quiz Bot!*\n\n`;
-  menuText += `📚 *Available Quizzes:* ${quizzes.length}\n\n`;
+  let menuText = `🎯 <b>Welcome to the Quiz Bot!</b>\n\n`;
+  menuText += `📚 <b>Available Quizzes:</b> ${quizzes.length}\n\n`;
   menuText += `Choose a quiz below or use:\n`;
   menuText += `• /quizzes - List all quizzes\n`;
-  menuText += `• /share quiz_id - Get shareable link\n`;
   menuText += `• /leaderboard - View leaderboards`;
 
   const keyboard = {
@@ -21,7 +20,7 @@ async function showMainMenu(bot, chatId) {
   };
 
   bot.sendMessage(chatId, menuText, {
-    parse_mode: 'Markdown',
+    parse_mode: 'HTML',
     reply_markup: keyboard
   });
 }
@@ -34,7 +33,7 @@ async function showQuizList(bot, chatId) {
     return;
   }
 
-  let listText = `📚 *All Available Quizzes*\n\n`;
+  let listText = `📚 <b>All Available Quizzes</b>\n\n`;
 
   const keyboard = {
     inline_keyboard: quizzes.map(q => [
@@ -43,7 +42,7 @@ async function showQuizList(bot, chatId) {
   };
 
   bot.sendMessage(chatId, listText, {
-    parse_mode: 'Markdown',
+    parse_mode: 'HTML',
     reply_markup: keyboard
   });
 }
@@ -57,12 +56,12 @@ async function showQuizDetails(bot, chatId, userId, quizId, isAdmin) {
 
   const attempted = hasUserAttempted(userId, quizId);
 
-  let detailText = `🎯 *${escapeMarkdown(quiz.title)}* 📖\n\n`;
+  let detailText = `🎯 <b>${escapeHtml(quiz.title)}</b> 📖\n\n`;
 
   if (attempted && !isAdmin) {
-    detailText += `✅ _You have already completed this quiz!_`;
+    detailText += `✅ <i>You have already completed this quiz!</i>`;
   } else {
-    detailText += `✨ _Ready to begin?_`;
+    detailText += `✨ <i>Ready to begin?</i>`;
   }
 
   const buttons = [];
@@ -80,7 +79,7 @@ async function showQuizDetails(bot, chatId, userId, quizId, isAdmin) {
   buttons.push([{ text: '◀️ Back to Quizzes', callback_data: 'browse_quizzes' }]);
 
   bot.sendMessage(chatId, detailText, {
-    parse_mode: 'Markdown',
+    parse_mode: 'HTML',
     reply_markup: { inline_keyboard: buttons }
   });
 }
@@ -102,7 +101,7 @@ async function showReview(bot, chatId, userId, quizId) {
   const questions = quiz.questions;
   const userAnswers = JSON.parse(result.user_answers);
 
-  let reviewText = `📝 *Review: ${escapeMarkdown(quiz.title)}*\n\n`;
+  let reviewText = `📝 <b>Review: ${escapeHtml(quiz.title)}</b>\n\n`;
   reviewText += `📊 Score: ${result.score}/${questions.length}\n`;
   reviewText += `⏱️ Time: ${result.total_time}s\n\n`;
 
@@ -110,20 +109,20 @@ async function showReview(bot, chatId, userId, quizId) {
     const userChoice = userAnswers[qIndex];
     const isCorrect = userChoice === q.correct;
 
-    reviewText += `*Q${qIndex + 1}: ${escapeMarkdown(q.question)}*\n`;
+    reviewText += `<b>Q${qIndex + 1}: ${escapeHtml(q.question)}</b>\n`;
 
-    if (userChoice === null) {
+    if (userChoice === null || userChoice === undefined) {
       reviewText += `⏰ Time's up - No answer\n`;
     } else if (isCorrect) {
-      reviewText += `✅ Your answer: ${escapeMarkdown(q.options[userChoice])}\n`;
+      reviewText += `✅ Your answer: ${escapeHtml(q.options[userChoice])}\n`;
     } else {
-      reviewText += `❌ Your answer: ${escapeMarkdown(q.options[userChoice])}\n`;
-      reviewText += `✓ Correct: ${escapeMarkdown(q.options[q.correct])}\n`;
+      reviewText += `❌ Your answer: ${escapeHtml(q.options[userChoice])}\n`;
+      reviewText += `✓ Correct: ${escapeHtml(q.options[q.correct])}\n`;
     }
     reviewText += `\n`;
   });
 
-  bot.sendMessage(chatId, reviewText, { parse_mode: 'Markdown' });
+  bot.sendMessage(chatId, reviewText, { parse_mode: 'HTML' });
 }
 
 async function showLeaderboard(bot, chatId, quizId) {
@@ -136,24 +135,24 @@ async function showLeaderboard(bot, chatId, quizId) {
   }
 
   if (leaderboard.length === 0) {
-    bot.sendMessage(chatId, `🏆 *Leaderboard: ${escapeMarkdown(quiz.title)}*\n\nNo results yet. Be the first!`, {
-      parse_mode: 'Markdown'
+    bot.sendMessage(chatId, `🏆 <b>Leaderboard: ${escapeHtml(quiz.title)}</b>\n\nNo results yet. Be the first!`, {
+      parse_mode: 'HTML'
     });
     return;
   }
 
-  let leaderboardText = `🏆 *Leaderboard: ${escapeMarkdown(quiz.title)}*\n\n`;
+  let leaderboardText = `🏆 <b>Leaderboard: ${escapeHtml(quiz.title)}</b>\n\n`;
 
   leaderboard.forEach((entry, index) => {
     const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`;
     const name = entry.first_name || entry.username || 'Anonymous';
-    leaderboardText += `${medal} *${escapeMarkdown(name)}* - ${entry.score}/${quiz.questions.length} (${entry.total_time}s)\n`;
+    leaderboardText += `${medal} <b>${escapeHtml(name)}</b> - ${entry.score}/${quiz.questions.length} (${entry.total_time}s)\n`;
   });
 
   const shareLink = getShareableLink(quizId);
   leaderboardText += `\n🔗 Share: ${shareLink}`;
 
-  bot.sendMessage(chatId, leaderboardText, { parse_mode: 'Markdown' });
+  bot.sendMessage(chatId, leaderboardText, { parse_mode: 'HTML' });
 }
 
 module.exports = {

@@ -5,6 +5,7 @@ const QUIZZES = {
     title: 'SB Canto 3 Chapter 17',
     description: 'Śrīmad Bhāgavatam Quiz - Canto 3 Chapter 17',
     createdDate: '2025-12-23',
+    live: true,
     questions: [
       {
         question: "According to the Pinda-siddhi logic mentioned in the SB 3/17/18 purport, why was Hiranyakasipu considered the elder twin despite being born second?",
@@ -38,6 +39,7 @@ const QUIZZES = {
     title: 'SB Canto 3 Chapter 18',
     description: 'Śrīmad Bhāgavatam Quiz - Canto 3 Chapter 18',
     createdDate: '2025-12-24',
+    live: true,
     questions: [
       {
         question: "Who is described as the most independent demigod of the universe who came to witness the fight?",
@@ -66,31 +68,47 @@ const QUIZZES = {
     title: 'SB Canto 3 Chapter 19',
     description: 'Śrīmad Bhāgavatam Quiz - Canto 3 Chapter 19',
     createdDate: '2025-12-25',
+    live: true,
     questions: [
       {
-        question: "Sample Question 1 - Replace with actual question",
-        options: ["Option A", "Option B", "Option C", "Option D"],
-        correct: 0
-      },
-      {
-        question: "Sample Question 2 - Replace with actual question",
-        options: ["Option A", "Option B", "Option C", "Option D"],
-        correct: 1
-      },
-      {
-        question: "Sample Question 3 - Replace with actual question",
-        options: ["Option A", "Option B", "Option C", "Option D"],
+        question: "What spiritual benefit is gained by hearing or telling this story?",
+        options: ["They will gain the physical strength of a boar.", "They will never face any financial loss.", "They are freed from even the sin of killing a brahmana and gain Vaikuṇṭha.", "They will become the next Lord Brahma."],
         correct: 2
       },
       {
-        question: "Sample Question 4 - Replace with actual question",
-        options: ["Option A", "Option B", "Option C", "Option D"],
+        question: "Why did Brahmā call Hiraṇyākṣa 'blessed'?",
+        options: ["Because his brother would eventually avenge him.", "Because he died while seeing the face of the Supreme Lord.", "Because he was the strongest demon to ever live.", "Because he was granted a place in the sun planet."],
+        correct: 1
+      },
+      {
+        question: "How was Hiraṇyākṣa finally killed by the Lord?",
+        options: ["By the striking of His mace", "By the Sudarśana Cakra", "By a simple slap at the root of the ear", "By the crushing of His forefeet"],
+        correct: 2
+      },
+      {
+        question: "How did the Lord feel the impact of the demon's hard fist?",
+        options: ["Like a mountain struck by a thunderbolt", "Like an elephant struck by flowers", "It caused Him great pain", "He felt a slight scratch on His chest"],
+        correct: 1
+      },
+      {
+        question: "What did Hiraṇyākṣa do when all his weapons were broken and his magic failed?",
+        options: ["He tried to crush the Lord in embrace.", "He begged for a boon of immortality.", "He dove back into the depths of the ocean to hide.", "He threw a mountain at the Lord."],
+        correct: 0
+      },
+      {
+        question: "How did the Lord bring an end to all the demon's mystic conjuring tricks?",
+        options: ["By drinking the rain of blood and pus.", "By blowing His conchshell, the Pāñcajanya.", "By striking the ground with His hoof.", "By casting His Sudarśana Cakra."],
         correct: 3
       },
       {
-        question: "Sample Question 5 - Replace with actual question",
-        options: ["Option A", "Option B", "Option C", "Option D"],
-        correct: 0
+        question: "How did Hiraṇyākṣa react when the Lord stood before him unarmed after losing His mace?",
+        options: ["He laughed and tried to grab the Earth.", "He immediately struck the Lord's chest.", "He respected the laws of combat and did not strike.", "He surrendered out of respect for the Lord's bravery."],
+        correct: 2
+      },
+      {
+        question: "What distinguishes the Lord from the inhabitants of Vaikuṇṭha?",
+        options: ["They have distinct bodily form", "His wearing of a golden Mukuta", "His wearing of a peacock feather", "The Śrīvatsa mark on His chest"],
+        correct: 3
       }
     ]
   },
@@ -99,63 +117,46 @@ const QUIZZES = {
     title: 'SB Canto 3 Chapter 20',
     description: 'Śrīmad Bhāgavatam Quiz - Canto 3 Chapter 20',
     createdDate: '2025-12-26',
+    live: true,
     questions: [
       {
-        question: "Sample Question 1 - Replace with actual question",
-        options: ["Option A", "Option B", "Option C", "Option D"],
+        question: "What happened to Brahmā's body when his sons, the Kumāras, refused to follow his orders?",
+        options: ["He became filled with a terrible anger that he tried to suppress.", "He immediately gave up his life and took a new body.", "He laughed at their determination.", "He fell into a deep sleep out of disappointment."],
         correct: 0
       },
       {
-        question: "Sample Question 2 - Replace with actual question",
-        options: ["Option A", "Option B", "Option C", "Option D"],
+        question: "Who was born from between the eyebrows of Brahmā as a result of his suppressed anger?",
+        options: ["Lord Rudra (Śiva)", "Nārada Muni", "Dakṣa", "Kardama Muni"],
+        correct: 0
+      },
+      {
+        question: "Which group of beings was created from Brahmā's 'shining' and 'jovial' form, associated with the daytime?",
+        options: ["The ghosts and spirits.", "The Demigods (Devas).", "The Rakshasas (Man-eaters).", "The Pitṛs (Ancestors)."],
         correct: 1
       },
       {
-        question: "Sample Question 3 - Replace with actual question",
-        options: ["Option A", "Option B", "Option C", "Option D"],
-        correct: 2
-      },
-      {
-        question: "Sample Question 4 - Replace with actual question",
-        options: ["Option A", "Option B", "Option C", "Option D"],
-        correct: 3
-      },
-      {
-        question: "Sample Question 5 - Replace with actual question",
-        options: ["Option A", "Option B", "Option C", "Option D"],
-        correct: 0
-      }
-    ]
-  },
-  'quiz_5': {
-    id: 'quiz_5',
-    title: 'SB Canto 3 Chapter 21',
-    description: 'Śrīmad Bhāgavatam Quiz - Canto 3 Chapter 21',
-    createdDate: '2025-12-27',
-    questions: [
-      {
-        question: "Sample Question 1 - Replace with actual question",
-        options: ["Option A", "Option B", "Option C", "Option D"],
+        question: "From which part of Brahmā were the sages (like Marīci, Atri, and Vasiṣṭha) born?",
+        options: ["From various limbs and parts of his body.", "From his breath (Prāna).", "From his hair.", "From his tears."],
         correct: 0
       },
       {
-        question: "Sample Question 2 - Replace with actual question",
-        options: ["Option A", "Option B", "Option C", "Option D"],
+        question: "When the Yakṣas and Rākṣasas were born, what was their immediate reaction toward Brahma?",
+        options: ["They offered him prayers and flowers.", "They ran to Eat him out of extreme hunger and thirst.", "They asked him for a kingdom to rule.", "They immediately began performing severe penance."],
         correct: 1
       },
       {
-        question: "Sample Question 3 - Replace with actual question",
-        options: ["Option A", "Option B", "Option C", "Option D"],
-        correct: 2
+        question: "What entities were created from the hair that dropped from Brahma's body while he was crawling in a frustrated state?",
+        options: ["Birds and flying insects.", "Ferocious snakes and cobras (Nāgas).", "The forest trees and medicinal herbs.", "Small animals like rabbits and deer."],
+        correct: 1
       },
       {
-        question: "Sample Question 4 - Replace with actual question",
-        options: ["Option A", "Option B", "Option C", "Option D"],
-        correct: 3
+        question: "From which part of Brahma's body were the ghosts (Bhūtas) and fiends (Piśācas) evolved?",
+        options: ["From his sloth and laziness.", "From his laughter.", "From his shadow.", "From his fingernails."],
+        correct: 0
       },
       {
-        question: "Sample Question 5 - Replace with actual question",
-        options: ["Option A", "Option B", "Option C", "Option D"],
+        question: "The more one is free from the desire for sex, the more he is promoted to the level of the demigods.",
+        options: ["True", "False"],
         correct: 0
       }
     ]
@@ -171,14 +172,8 @@ function getAllQuizzes() {
 }
 
 function getAvailableQuizzes() {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // Set to start of day for comparison
-  
-  return Object.values(QUIZZES).filter(quiz => {
-    const quizDate = new Date(quiz.createdDate);
-    quizDate.setHours(0, 0, 0, 0);
-    return quizDate <= today; // Only show quizzes from today or earlier
-  });
+  // Return quizzes where live = true
+  return Object.values(QUIZZES).filter(quiz => quiz.live === true);
 }
 
 module.exports = {

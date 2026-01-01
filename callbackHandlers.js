@@ -2,7 +2,7 @@
 const { ADMIN_USERNAMES } = require('./config');
 const { getQuiz, getAvailableQuizzes } = require('./quizData');
 const { hasUserAttempted, startQuizSession, getQuizState } = require('./database');
-const { getShareableLink, escapeMarkdown } = require('./utils');
+const { getShareableLink, escapeHtml } = require('./utils');
 const { showMainMenu, showQuizList, showQuizDetails, showReview, showLeaderboard } = require('./menuHandlers');
 const { sendQuestion, handleAnswer, clearTimer } = require('./quizLogic');
 
@@ -13,11 +13,6 @@ function setupCallbacks(bot) {
     const data = query.data;
     const username = query.from.username || '';
     const isAdmin = ADMIN_USERNAMES.includes(username.toLowerCase());
-    
-    // Debug logging for admin check
-    if (data.startsWith('answer_')) {
-      console.log(`Answer callback - Username: ${username}, IsAdmin: ${isAdmin}, AdminList: ${ADMIN_USERNAMES.join(',')}`);
-    }
 
     try {
       if (data === 'browse_quizzes') {
@@ -31,8 +26,8 @@ function setupCallbacks(bot) {
           ])
         };
         keyboard.inline_keyboard.push([{ text: '◀️ Back', callback_data: 'back_main' }]);
-        bot.sendMessage(chatId, '🏆 *Select a quiz to view its leaderboard:*', {
-          parse_mode: 'Markdown',
+        bot.sendMessage(chatId, '🏆 <b>Select a quiz to view its leaderboard:</b>', {
+          parse_mode: 'HTML',
           reply_markup: keyboard
         });
       }
@@ -40,11 +35,13 @@ function setupCallbacks(bot) {
         await showMainMenu(bot, chatId);
       }
       else if (data.startsWith('quiz_')) {
-        const quizId = data.replace('quiz_', '');
+        // callback_data is 'quiz_quiz_1' (prefix 'quiz_' + id 'quiz_1')
+        const quizId = data.substring(5); // Remove first 'quiz_' to get 'quiz_1'
         await showQuizDetails(bot, chatId, userId, quizId, isAdmin);
       }
       else if (data.startsWith('start_')) {
-        const quizId = data.replace('start_', '');
+        // callback_data is 'start_quiz_1' (prefix 'start_' + id 'quiz_1')
+        const quizId = data.substring(6); // Remove 'start_' to get 'quiz_1'
         const quiz = getQuiz(quizId);
         
         if (!quiz) {
@@ -67,42 +64,43 @@ function setupCallbacks(bot) {
         await sendQuestion(bot, chatId, userId, quizId, 0);
       }
       else if (data.startsWith('lb_')) {
-        const quizId = data.replace('lb_', '');
+        // callback_data is 'lb_quiz_1' (prefix 'lb_' + id 'quiz_1')
+        const quizId = data.substring(3); // Remove 'lb_' to get 'quiz_1'
         await showLeaderboard(bot, chatId, quizId);
       }
       else if (data.startsWith('review_')) {
-        const quizId = data.replace('review_', '');
+        // callback_data is 'review_quiz_1' (prefix 'review_' + id 'quiz_1')
+        const quizId = data.substring(7); // Remove 'review_' to get 'quiz_1'
         await showReview(bot, chatId, userId, quizId);
       }
       else if (data.startsWith('share_')) {
-        const quizId = data.replace('share_', '');
+        // callback_data is 'share_quiz_1' (prefix 'share_' + id 'quiz_1')
+        const quizId = data.substring(6); // Remove 'share_' to get 'quiz_1'
         const quiz = getQuiz(quizId);
         if (!quiz) return;
         const link = getShareableLink(quizId);
         
         bot.sendMessage(chatId,
-          `🔗 *Share "${escapeMarkdown(quiz.title)}"*\n\n` +
+          `🔗 <b>Share "${escapeHtml(quiz.title)}"</b>\n\n` +
           `${link}\n\n` +
-          `_Forward this link to friends!_`,
-          { parse_mode: 'Markdown' }
+          `<i>Forward this link to friends!</i>`,
+          { parse_mode: 'HTML' }
         );
       }
       else if (data.startsWith('answer_')) {
-        const parts = data.split('_');
-        const quizId = parts[1];
-        const questionIndex = parseInt(parts[2]);
-        const answerIndex = parseInt(parts[3]);
+        // Format: answer_quiz_1_0_2 (answer_quizId_questionIndex_answerIndex)
+        const withoutPrefix = data.substring(7); // Remove 'answer_' to get 'quiz_1_0_2'
+        const lastUnderscore = withoutPrefix.lastIndexOf('_');
+        const secondLastUnderscore = withoutPrefix.lastIndexOf('_', lastUnderscore - 1);
+        
+        const quizId = withoutPrefix.substring(0, secondLastUnderscore); // quiz_1
+        const questionIndex = parseInt(withoutPrefix.substring(secondLastUnderscore + 1, lastUnderscore)); // 0
+        const answerIndex = parseInt(withoutPrefix.substring(lastUnderscore + 1)); // 2
 
         const state = getQuizState(userId);
         
         if (!state) {
           bot.answerCallbackQuery(query.id, { text: 'Quiz session expired. Please start again.', show_alert: true });
-          return;
-        }
-        
-        // Validate quiz_id matches current session
-        if (state.quiz_id !== quizId) {
-          bot.answerCallbackQuery(query.id, { text: 'This question is from a different quiz session.', show_alert: true });
           return;
         }
         

@@ -2,7 +2,7 @@
 const { ADMIN_USERNAMES } = require('./config');
 const { getQuiz, getAvailableQuizzes } = require('./quizData');
 const { clearUserData, listUsers } = require('./database');
-const { getShareableLink, escapeMarkdown } = require('./utils');
+const { getShareableLink, escapeHtml } = require('./utils');
 const { showMainMenu, showQuizList, showQuizDetails, showLeaderboard } = require('./menuHandlers');
 
 function setupCommands(bot) {
@@ -41,12 +41,12 @@ function setupCommands(bot) {
 
     const link = getShareableLink(quizId);
     bot.sendMessage(chatId, 
-      `🔗 *Share this quiz:*\n\n` +
-      `📝 *${escapeMarkdown(quiz.title)}*\n` +
-      `${escapeMarkdown(quiz.description)}\n\n` +
+      `🔗 <b>Share this quiz:</b>\n\n` +
+      `📝 <b>${escapeHtml(quiz.title)}</b>\n` +
+      `${escapeHtml(quiz.description)}\n\n` +
       `🔗 Link: ${link}\n\n` +
-      `_Anyone can click this link to start the quiz!_`,
-      { parse_mode: 'Markdown' }
+      `<i>Anyone can click this link to start the quiz!</i>`,
+      { parse_mode: 'HTML' }
     );
   });
 
@@ -62,8 +62,8 @@ function setupCommands(bot) {
           { text: `🏆 ${q.title}`, callback_data: `lb_${q.id}` }
         ])
       };
-      bot.sendMessage(chatId, '🏆 *Select a quiz to view its leaderboard:*', {
-        parse_mode: 'Markdown',
+      bot.sendMessage(chatId, '🏆 <b>Select a quiz to view its leaderboard:</b>', {
+        parse_mode: 'HTML',
         reply_markup: keyboard
       });
       return;
@@ -137,12 +137,12 @@ function setupCommands(bot) {
       return;
     }
 
-    let userList = `👥 *Users in ${quizId}:*\n\n`;
+    let userList = `👥 <b>Users in ${quizId}:</b>\n\n`;
     users.forEach((user, index) => {
       userList += `${index + 1}. @${user.username || 'unknown'} - Score: ${user.score}\n`;
     });
 
-    bot.sendMessage(chatId, userList, { parse_mode: 'Markdown' });
+    bot.sendMessage(chatId, userList, { parse_mode: 'HTML' });
   });
 }
 

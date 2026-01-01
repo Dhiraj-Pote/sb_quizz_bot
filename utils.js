@@ -9,15 +9,16 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function escapeMarkdown(text) {
-  // Escape special Markdown characters for Telegram
-  return text.replace(/[_*[\]()~`>#+\-=|{}.!]/g, function(match) {
-    return '\\' + match;
-  });
+function escapeHtml(text) {
+  // Escape special HTML characters for Telegram HTML parse mode
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 }
 
 module.exports = {
   getShareableLink,
   sleep,
-  escapeMarkdown
+  escapeHtml
 };

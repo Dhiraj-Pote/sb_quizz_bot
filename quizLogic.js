@@ -2,7 +2,7 @@
 const { QUESTION_TIME_LIMIT } = require('./config');
 const { getQuiz } = require('./quizData');
 const { getQuizState, updateQuizState, deleteQuizState, markUserAttempted, saveResult } = require('./database');
-const { getShareableLink, sleep, escapeMarkdown } = require('./utils');
+const { getShareableLink, sleep, escapeHtml } = require('./utils');
 
 const userTimers = {};
 
@@ -25,9 +25,9 @@ async function sendQuestion(bot, chatId, userId, quizId, questionIndex) {
 
   const question = questions[questionIndex];
 
-  const questionText = `📝 *${escapeMarkdown(quiz.title)}*\n` +
+  const questionText = `📝 <b>${escapeHtml(quiz.title)}</b>\n` +
     `Question ${questionIndex + 1}/${questions.length}\n\n` +
-    `${escapeMarkdown(question.question)}\n\n` +
+    `${escapeHtml(question.question)}\n\n` +
     `⏱️ Time: ${QUESTION_TIME_LIMIT} seconds`;
 
   const keyboard = {
@@ -37,7 +37,7 @@ async function sendQuestion(bot, chatId, userId, quizId, questionIndex) {
   };
 
   const sentMessage = await bot.sendMessage(chatId, questionText, {
-    parse_mode: 'Markdown',
+    parse_mode: 'HTML',
     reply_markup: keyboard
   });
 
@@ -53,16 +53,16 @@ async function sendQuestion(bot, chatId, userId, quizId, questionIndex) {
       return;
     }
 
-    const updatedText = `📝 *${escapeMarkdown(quiz.title)}*\n` +
+    const updatedText = `📝 <b>${escapeHtml(quiz.title)}</b>\n` +
       `Question ${questionIndex + 1}/${questions.length}\n\n` +
-      `${escapeMarkdown(question.question)}\n\n` +
+      `${escapeHtml(question.question)}\n\n` +
       `⏱️ Time: ${remaining} seconds`;
 
     try {
       await bot.editMessageText(updatedText, {
         chat_id: chatId,
         message_id: sentMessage.message_id,
-        parse_mode: 'Markdown',
+        parse_mode: 'HTML',
         reply_markup: keyboard
       });
     } catch (error) {
@@ -98,7 +98,6 @@ async function handleAnswer(bot, chatId, userId, messageId, quizId, questionInde
   // Check if answer was already recorded (race condition protection)
   const userAnswers = JSON.parse(state.user_answers);
   if (userAnswers.length > questionIndex) {
-    // Answer already recorded (likely timeout happened simultaneously)
     return;
   }
 
@@ -121,30 +120,30 @@ async function handleAnswer(bot, chatId, userId, messageId, quizId, questionInde
   }
 
   if (isCorrect) {
-    const feedbackText = `*Correct!*\n\n` +
-      `${escapeMarkdown(question.question)}\n\n` +
-      `Answer: ${escapeMarkdown(question.options[question.correct])}`;
+    const feedbackText = `<b>✅ Correct!</b>\n\n` +
+      `${escapeHtml(question.question)}\n\n` +
+      `Answer: ${escapeHtml(question.options[question.correct])}`;
     
     try {
       await bot.editMessageText(feedbackText, {
         chat_id: chatId,
         message_id: messageId,
-        parse_mode: 'Markdown'
+        parse_mode: 'HTML'
       });
     } catch (e) {}
 
     updateQuizState(userId, state.current_question + 1, state.score + 1, Date.now(), userAnswers);
   } else {
-    const feedbackText = `*Wrong!*\n\n` +
-      `${escapeMarkdown(question.question)}\n\n` +
-      `Your answer: ${escapeMarkdown(question.options[answerIndex])}\n` +
-      `Correct answer: ${escapeMarkdown(question.options[question.correct])}`;
+    const feedbackText = `<b>❌ Wrong!</b>\n\n` +
+      `${escapeHtml(question.question)}\n\n` +
+      `Your answer: ${escapeHtml(question.options[answerIndex])}\n` +
+      `Correct answer: ${escapeHtml(question.options[question.correct])}`;
     
     try {
       await bot.editMessageText(feedbackText, {
         chat_id: chatId,
         message_id: messageId,
-        parse_mode: 'Markdown'
+        parse_mode: 'HTML'
       });
     } catch (e) {}
 
@@ -163,24 +162,22 @@ async function handleTimeout(bot, chatId, userId, messageId, quizId, questionInd
 
   if (!state) return;
 
-  // Check if answer was already recorded (race condition protection)
   const userAnswers = JSON.parse(state.user_answers);
   if (userAnswers.length > questionIndex) {
-    // Answer already recorded (user answered just before timeout)
     return;
   }
 
   userAnswers.push(null);
 
-  const timeoutText = `*Time's Up!*\n\n` +
-    `${escapeMarkdown(question.question)}\n\n` +
-    `Correct answer: ${escapeMarkdown(question.options[question.correct])}`;
+  const timeoutText = `<b>⏰ Time's Up!</b>\n\n` +
+    `${escapeHtml(question.question)}\n\n` +
+    `Correct answer: ${escapeHtml(question.options[question.correct])}`;
 
   try {
     await bot.editMessageText(timeoutText, {
       chat_id: chatId,
       message_id: messageId,
-      parse_mode: 'Markdown'
+      parse_mode: 'HTML'
     });
   } catch (e) {}
 
@@ -246,10 +243,10 @@ async function finishQuiz(bot, chatId, userId, quizId) {
 
   const shareLink = getShareableLink(quizId);
 
-  const resultText = `${resultEmoji} *Quiz Complete!*\n\n` +
+  const resultText = `${resultEmoji} <b>Quiz Complete!</b>\n\n` +
     `${resultMessage}\n\n` +
-    `📊 *Your Results:*\n` +
-    `Quiz: ${escapeMarkdown(quiz.title)}\n` +
+    `📊 <b>Your Results:</b>\n` +
+    `Quiz: ${escapeHtml(quiz.title)}\n` +
     `Score: ${state.score}/${totalQuestions}\n` +
     `Time: ${totalTime} seconds\n\n` +
     `🔗 Share this quiz: ${shareLink}`;
@@ -263,7 +260,7 @@ async function finishQuiz(bot, chatId, userId, quizId) {
   };
 
   bot.sendMessage(chatId, resultText, {
-    parse_mode: 'Markdown',
+    parse_mode: 'HTML',
     reply_markup: keyboard
   });
 }
