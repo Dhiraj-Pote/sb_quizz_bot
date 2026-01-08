@@ -58,15 +58,6 @@ function initDatabase() {
   console.log('✓ Database initialized with WAL mode');
   console.log('✓ Cleaned up old quiz sessions');
 }
-    CREATE INDEX IF NOT EXISTS idx_users_lookup ON users(user_id, quiz_id);
-    
-    DELETE FROM active_quizzes;
-    
-    COMMIT;
-  `);
-  
-  console.log('✓ Database initialized and old sessions cleaned');
-}
 
 // Prepare statements once for better performance
 const statements = {
