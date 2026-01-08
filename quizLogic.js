@@ -25,15 +25,22 @@ async function sendQuestion(bot, chatId, userId, quizId, questionIndex) {
 
   const question = questions[questionIndex];
 
+  // Format question with better layout
   const questionText = `📝 <b>${escapeHtml(quiz.title)}</b>\n` +
-    `Question ${questionIndex + 1}/${questions.length}\n\n` +
+    `━━━━━━━━━━━━━━━━━━━━\n` +
+    `<b>Question ${questionIndex + 1}/${questions.length}</b>\n\n` +
     `${escapeHtml(question.question)}\n\n` +
-    `⏱️ Time: ${QUESTION_TIME_LIMIT} seconds`;
+    `⏱ Time remaining: <b>${QUESTION_TIME_LIMIT}s</b>`;
 
+  // Create keyboard with better formatting - one button per row for long text
   const keyboard = {
-    inline_keyboard: question.options.map((option, index) => [
-      { text: option, callback_data: `answer_${quizId}_${questionIndex}_${index}` }
-    ])
+    inline_keyboard: question.options.map((option, index) => {
+      // Use simple circle bullet for options
+      return [{ 
+        text: `⚪ ${option}`, 
+        callback_data: `answer_${quizId}_${questionIndex}_${index}` 
+      }];
+    })
   };
 
   const sentMessage = await bot.sendMessage(chatId, questionText, {
@@ -54,9 +61,10 @@ async function sendQuestion(bot, chatId, userId, quizId, questionIndex) {
     }
 
     const updatedText = `📝 <b>${escapeHtml(quiz.title)}</b>\n` +
-      `Question ${questionIndex + 1}/${questions.length}\n\n` +
+      `━━━━━━━━━━━━━━━━━━━━\n` +
+      `<b>Question ${questionIndex + 1}/${questions.length}</b>\n\n` +
       `${escapeHtml(question.question)}\n\n` +
-      `⏱️ Time: ${remaining} seconds`;
+      `⏱ Time remaining: <b>${remaining}s</b>`;
 
     try {
       await bot.editMessageText(updatedText, {
@@ -107,7 +115,7 @@ async function handleAnswer(bot, chatId, userId, messageId, quizId, questionInde
   userAnswers.push(answerIndex);
 
   // Loading animation
-  const loadingFrames = ['Checking .', 'Checking ..', 'Checking ...'];
+  const loadingFrames = ['⏳ Checking', '⏳ Checking.', '⏳ Checking..', '⏳ Checking...'];
   
   for (let i = 0; i < loadingFrames.length; i++) {
     try {
@@ -115,14 +123,39 @@ async function handleAnswer(bot, chatId, userId, messageId, quizId, questionInde
         chat_id: chatId,
         message_id: messageId
       });
-      await sleep(250);
+      await sleep(200);
     } catch (e) {}
   }
 
   if (isCorrect) {
-    const feedbackText = `<b>✅ Correct!</b>\n\n` +
-      `${escapeHtml(question.question)}\n\n` +
-      `Answer: ${escapeHtml(question.options[question.correct])}`;
+    // Celebration animation for correct answer
+    const celebrationFrames = [
+      '🎉',
+      '🎉✨',
+      '🎉✨🎊',
+      '🎉✨🎊✨',
+      '🎉✨🎊✨🎉',
+      '✨🎊✨🎉✨',
+      '🎊✨🎉✨',
+      '✨🎉✨',
+      '🎉✨',
+      '✨'
+    ];
+    
+    for (let i = 0; i < celebrationFrames.length; i++) {
+      try {
+        await bot.editMessageText(`${celebrationFrames[i]} Correct! ${celebrationFrames[i]}`, {
+          chat_id: chatId,
+          message_id: messageId
+        });
+        await sleep(150);
+      } catch (e) {}
+    }
+
+    const feedbackText = `✅ <b>Correct Answer!</b> 🎉\n\n` +
+      `<b>Question:</b>\n${escapeHtml(question.question)}\n\n` +
+      `⚪ <b>${escapeHtml(question.options[question.correct])}</b>\n\n` +
+      `Great job! 👏`;
     
     try {
       await bot.editMessageText(feedbackText, {
@@ -134,10 +167,11 @@ async function handleAnswer(bot, chatId, userId, messageId, quizId, questionInde
 
     updateQuizState(userId, state.current_question + 1, state.score + 1, Date.now(), userAnswers);
   } else {
-    const feedbackText = `<b>❌ Wrong!</b>\n\n` +
-      `${escapeHtml(question.question)}\n\n` +
-      `Your answer: ${escapeHtml(question.options[answerIndex])}\n` +
-      `Correct answer: ${escapeHtml(question.options[question.correct])}`;
+    const feedbackText = `❌ <b>Wrong Answer</b>\n\n` +
+      `<b>Question:</b>\n${escapeHtml(question.question)}\n\n` +
+      `⚪ <b>Your answer:</b>\n${escapeHtml(question.options[answerIndex])}\n\n` +
+      `✅ <b>Correct answer:</b>\n${escapeHtml(question.options[question.correct])}\n\n` +
+      `Keep trying! 💪`;
     
     try {
       await bot.editMessageText(feedbackText, {
@@ -152,7 +186,7 @@ async function handleAnswer(bot, chatId, userId, messageId, quizId, questionInde
 
   setTimeout(async () => {
     await sendQuestion(bot, chatId, userId, quizId, questionIndex + 1);
-  }, 1500);
+  }, 2000);
 }
 
 async function handleTimeout(bot, chatId, userId, messageId, quizId, questionIndex) {
@@ -200,13 +234,13 @@ async function finishQuiz(bot, chatId, userId, quizId) {
   const totalTime = Math.floor((Date.now() - state.start_time) / 1000);
   const userAnswers = JSON.parse(state.user_answers);
 
-  // Loading animation
-  const loadingMsg = await bot.sendMessage(chatId, '◐ Calculating results...');
-  const circleFrames = ['◐', '◓', '◑', '◒'];
+  // Loading animation with celebration
+  const loadingMsg = await bot.sendMessage(chatId, '🎯 Calculating results...');
+  const circleFrames = ['◐', '◓', '◑', '◒', '◐', '◓', '◑', '◒'];
   
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < circleFrames.length; i++) {
     try {
-      await bot.editMessageText(`${circleFrames[i % 4]} Calculating results...`, {
+      await bot.editMessageText(`${circleFrames[i]} Calculating your score...`, {
         chat_id: chatId,
         message_id: loadingMsg.message_id
       });
@@ -228,28 +262,35 @@ async function finishQuiz(bot, chatId, userId, quizId) {
   const totalQuestions = quiz.questions.length;
   let resultEmoji = '🎉';
   let resultMessage = 'Outstanding!';
+  let celebrationEmoji = '🎊✨🎉';
 
   const percentage = (state.score / totalQuestions) * 100;
   if (percentage >= 80) {
     resultEmoji = '🏆';
     resultMessage = 'Excellent work!';
+    celebrationEmoji = '🏆✨🎉✨🏆';
   } else if (percentage >= 60) {
     resultEmoji = '👏';
     resultMessage = 'Good job!';
+    celebrationEmoji = '👏✨🎊';
   } else {
     resultEmoji = '💪';
     resultMessage = 'Keep practicing!';
+    celebrationEmoji = '💪📚';
   }
 
   const shareLink = getShareableLink(quizId);
 
-  const resultText = `${resultEmoji} <b>Quiz Complete!</b>\n\n` +
+  const resultText = `${celebrationEmoji}\n\n` +
+    `${resultEmoji} <b>Quiz Complete!</b> ${resultEmoji}\n\n` +
     `${resultMessage}\n\n` +
-    `📊 <b>Your Results:</b>\n` +
-    `Quiz: ${escapeHtml(quiz.title)}\n` +
-    `Score: ${state.score}/${totalQuestions}\n` +
-    `Time: ${totalTime} seconds\n\n` +
-    `🔗 Share this quiz: ${shareLink}`;
+    `━━━━━━━━━━━━━━━━━━━━\n` +
+    `📊 <b>Your Results:</b>\n\n` +
+    `📝 Quiz: ${escapeHtml(quiz.title)}\n` +
+    `✅ Score: <b>${state.score}/${totalQuestions}</b> (${Math.round(percentage)}%)\n` +
+    `⏱ Time: ${totalTime} seconds\n` +
+    `━━━━━━━━━━━━━━━━━━━━\n\n` +
+    `🔗 Share this quiz:\n${shareLink}`;
 
   const keyboard = {
     inline_keyboard: [

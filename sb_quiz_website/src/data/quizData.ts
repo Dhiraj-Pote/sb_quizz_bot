@@ -1,8 +1,48 @@
-// Quiz Library - All quiz data
-const QUIZZES = {
-  'quiz_1': {
-    id: 'quiz_1',
-    title: 'SB Canto 3 Chapter 17',
+// Quiz Data - Migrated from Telegram Bot
+// This serves as initial data and can be synced to Supabase
+
+export interface QuizQuestion {
+  question: string;
+  options: string[];
+  correct: number;
+  explanation?: string;
+  verseReference?: string;
+}
+
+export interface Quiz {
+  id: string;
+  cantoNumber: number;
+  chapterNumber: number;
+  title: string;
+  sanskritTitle?: string;
+  description: string;
+  createdDate: string;
+  live: boolean;
+  questions: QuizQuestion[];
+}
+
+export const CANTOS = [
+  { number: 1, title: 'Creation', sanskritTitle: 'Sṛṣṭi', chapters: 19 },
+  { number: 2, title: 'The Cosmic Manifestation', sanskritTitle: 'Viśva-sṛṣṭi', chapters: 10 },
+  { number: 3, title: 'The Status Quo', sanskritTitle: 'Yathāvasthita', chapters: 33 },
+  { number: 4, title: 'The Creation of the Fourth Order', sanskritTitle: 'Caturtha-sarga', chapters: 31 },
+  { number: 5, title: 'The Creative Impetus', sanskritTitle: 'Sṛṣṭi-kāraṇa', chapters: 26 },
+  { number: 6, title: 'Prescribed Duties for Mankind', sanskritTitle: 'Puṁsāṁ Vṛtti', chapters: 19 },
+  { number: 7, title: 'The Science of God', sanskritTitle: 'Bhagavat-vijñāna', chapters: 15 },
+  { number: 8, title: 'Withdrawal of the Cosmic Creations', sanskritTitle: 'Pralaya', chapters: 24 },
+  { number: 9, title: 'Liberation', sanskritTitle: 'Mukti', chapters: 24 },
+  { number: 10, title: 'The Summum Bonum', sanskritTitle: 'Āśraya', chapters: 90 },
+  { number: 11, title: 'General History', sanskritTitle: 'Sāmānya-itihāsa', chapters: 31 },
+  { number: 12, title: 'The Age of Deterioration', sanskritTitle: 'Kali-yuga', chapters: 13 },
+];
+
+export const QUIZZES: Record<string, Quiz> = {
+  'canto_3_chapter_17': {
+    id: 'canto_3_chapter_17',
+    cantoNumber: 3,
+    chapterNumber: 17,
+    title: 'Victory of Hiraṇyākṣa Over All the Directions of the Universe',
+    sanskritTitle: 'Hiraṇyākṣa Digvijaya',
     description: 'Śrīmad Bhāgavatam Quiz - Canto 3 Chapter 17',
     createdDate: '2025-12-23',
     live: true,
@@ -34,9 +74,12 @@ const QUIZZES = {
       }
     ]
   },
-  'quiz_2': {
-    id: 'quiz_2',
-    title: 'SB Canto 3 Chapter 18',
+  'canto_3_chapter_18': {
+    id: 'canto_3_chapter_18',
+    cantoNumber: 3,
+    chapterNumber: 18,
+    title: 'The Battle Between Lord Boar and the Demon Hiraṇyākṣa',
+    sanskritTitle: 'Varāha-Hiraṇyākṣa Yuddha',
     description: 'Śrīmad Bhāgavatam Quiz - Canto 3 Chapter 18',
     createdDate: '2025-12-24',
     live: true,
@@ -63,9 +106,12 @@ const QUIZZES = {
       }
     ]
   },
-  'quiz_3': {
-    id: 'quiz_3',
-    title: 'SB Canto 3 Chapter 19',
+  'canto_3_chapter_19': {
+    id: 'canto_3_chapter_19',
+    cantoNumber: 3,
+    chapterNumber: 19,
+    title: 'The Killing of the Demon Hiraṇyākṣa',
+    sanskritTitle: 'Hiraṇyākṣa-vadha',
     description: 'Śrīmad Bhāgavatam Quiz - Canto 3 Chapter 19',
     createdDate: '2025-12-25',
     live: true,
@@ -112,9 +158,12 @@ const QUIZZES = {
       }
     ]
   },
-  'quiz_4': {
-    id: 'quiz_4',
-    title: 'SB Canto 3 Chapter 20',
+  'canto_3_chapter_20': {
+    id: 'canto_3_chapter_20',
+    cantoNumber: 3,
+    chapterNumber: 20,
+    title: 'Conversation Between Maitreya and Vidura',
+    sanskritTitle: 'Maitreya-Vidura Saṁvāda',
     description: 'Śrīmad Bhāgavatam Quiz - Canto 3 Chapter 20',
     createdDate: '2025-12-26',
     live: true,
@@ -160,84 +209,26 @@ const QUIZZES = {
         correct: 0
       }
     ]
-  },
-  'quiz_5': {
-    id: 'quiz_5',
-    title: 'SB Canto 3 Chapter 21',
-    description: 'Śrīmad Bhāgavatam Quiz - Canto 3 Chapter 21',
-    createdDate: '2025-12-27',
-    live: true,
-    questions: [
-      {
-        question: "What did Svāyambhuva Manu do every morning to keep his kingdom spiritual?",
-        options: ["He slept until the sun was high in the sky", "He listened to the pastimes of the Lord", "He counted the taxes collected from the people", "He practiced sword fighting for many hours"],
-        correct: 1
-      },
-      {
-        question: "Why is the city of Barhiṣmatī considered a holy place (pīṭha-sthāna)?",
-        options: ["Because the hairs of Lord Varāha fell there", "Because it was the capital of the largest empire", "Because it was built using very expensive stones", "Because the weather there was always perfect"],
-        correct: 0
-      },
-      {
-        question: "What makes a person's life meaningful, even if it is very short?",
-        options: ["Having a lot of money and power", "Spending every moment in spiritual service", "Living longer than a thousand years", "Writing many books about history"],
-        correct: 1
-      },
-      {
-        question: "How can we make sure a very long life is not wasted?",
-        options: ["By hearing and chanting about the Lord's pastimes", "By building a famous historical legacy", "By exercising to stay young forever", "By traveling to every country in the world"],
-        correct: 0
-      },
-      {
-        question: "Why is hearing from a spiritual teacher the best way to learn?",
-        options: ["It saves us from making our own mistakes", "It gives knowledge inaccessible to eyes and ears", "It is a nice social tradition to show respect", "It is easier than reading books by ourselves"],
-        correct: 1
-      },
-      {
-        question: "Why did Kardama Muni agree to marry after being a monk?",
-        options: ["He was lonely and wanted a friend", "The King forced him to accept his daughter", "His vow was finished and his Guru gave permission", "He was tired of living in the forest"],
-        correct: 2
-      },
-      {
-        question: "What is the main goal of family life for a devotee?",
-        options: ["To achieve a high status in society", "To earn money to live comfortably", "To make a child a devotee of Lord", "To live a long and healthy physical life"],
-        correct: 2
-      },
-      {
-        question: "What was Kardama Muni's main reason for getting married?",
-        options: ["To fulfill his own material desires", "To follow the Lord's will and help creation", "To get a portion of the King's wealth", "To make his daily life easier and lazier"],
-        correct: 1
-      },
-      {
-        question: "How should a devotee use their body, mind, and words?",
-        options: ["To gain personal fame and mystic powers", "To fulfill all social and family duties perfectly", "To satisfy and please the Supreme Lord", "To keep the body healthy and live for a long time"],
-        correct: 2
-      },
-      {
-        question: "Why is hearing the truth better than seeing it with our eyes?",
-        options: ["Because eyes are too slow to see everything", "Because our senses are limited and easily tricked", "Because books are more famous than memories", "Because you can hear things even in the dark"],
-        correct: 1
-      }
-    ]
   }
 };
 
-function getQuiz(quizId) {
+// Helper functions
+export function getQuiz(quizId: string): Quiz | null {
   return QUIZZES[quizId] || null;
 }
 
-function getAllQuizzes() {
+export function getAllQuizzes(): Quiz[] {
   return Object.values(QUIZZES);
 }
 
-function getAvailableQuizzes() {
-  // Return quizzes where live = true
-  return Object.values(QUIZZES).filter(quiz => quiz.live === true);
+export function getAvailableQuizzes(): Quiz[] {
+  return Object.values(QUIZZES).filter(quiz => quiz.live);
 }
 
-module.exports = {
-  QUIZZES,
-  getQuiz,
-  getAllQuizzes,
-  getAvailableQuizzes
-};
+export function getQuizzesByCanto(cantoNumber: number): Quiz[] {
+  return Object.values(QUIZZES).filter(quiz => quiz.cantoNumber === cantoNumber && quiz.live);
+}
+
+export function getCantoInfo(cantoNumber: number) {
+  return CANTOS.find(c => c.number === cantoNumber);
+}
