@@ -29,7 +29,7 @@ function setupCommands(bot) {
   });
 
   // /share quiz_id - Get shareable link for a quiz
-  bot.onText(/\/share\s+(.+)/, async (msg, match) => {
+  bot.onText(/\/share\s+(.+)/, (msg, match) => {
     const chatId = msg.chat.id;
     const quizId = match[1].trim();
     const quiz = getQuiz(quizId);

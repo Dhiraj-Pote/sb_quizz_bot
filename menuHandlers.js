@@ -6,11 +6,11 @@ const { getShareableLink, escapeHtml } = require('./utils');
 async function showMainMenu(bot, chatId) {
   const quizzes = getAvailableQuizzes();
   
-  let menuText = `🎯 <b>Welcome to the Quiz Bot!</b>\n\n`;
-  menuText += `📚 <b>Available Quizzes:</b> ${quizzes.length}\n\n`;
-  menuText += `Choose a quiz below or use:\n`;
-  menuText += `• /quizzes - List all quizzes\n`;
-  menuText += `• /leaderboard - View leaderboards`;
+  const menuText = `🎯 <b>Welcome to the Quiz Bot!</b>\n\n` +
+    `📚 <b>Available Quizzes:</b> ${quizzes.length}\n\n` +
+    `Choose a quiz below or use:\n` +
+    `• /quizzes - List all quizzes\n` +
+    `• /leaderboard - View leaderboards`;
 
   const keyboard = {
     inline_keyboard: [
@@ -33,15 +33,13 @@ async function showQuizList(bot, chatId) {
     return;
   }
 
-  let listText = `📚 <b>All Available Quizzes</b>\n\n`;
-
   const keyboard = {
     inline_keyboard: quizzes.map(q => [
       { text: `📝 ${q.title}`, callback_data: `quiz_${q.id}` }
     ])
   };
 
-  bot.sendMessage(chatId, listText, {
+  bot.sendMessage(chatId, '📚 <b>All Available Quizzes</b>\n\n', {
     parse_mode: 'HTML',
     reply_markup: keyboard
   });
@@ -101,28 +99,46 @@ async function showReview(bot, chatId, userId, quizId) {
   const questions = quiz.questions;
   const userAnswers = JSON.parse(result.user_answers);
 
-  let reviewText = `📝 <b>Review: ${escapeHtml(quiz.title)}</b>\n\n`;
-  reviewText += `📊 Score: ${result.score}/${questions.length}\n`;
-  reviewText += `⏱️ Time: ${result.total_time}s\n\n`;
+  const reviewParts = [`📝 <b>Review: ${escapeHtml(quiz.title)}</b>\n\n` +
+    `📊 Score: ${result.score}/${questions.length}\n` +
+    `⏱️ Time: ${result.total_time}s\n\n`];
 
   questions.forEach((q, qIndex) => {
     const userChoice = userAnswers[qIndex];
     const isCorrect = userChoice === q.correct;
 
-    reviewText += `<b>Q${qIndex + 1}: ${escapeHtml(q.question)}</b>\n`;
+    let questionText = `<b>Q${qIndex + 1}: ${escapeHtml(q.question)}</b>\n`;
 
     if (userChoice === null || userChoice === undefined) {
-      reviewText += `⏰ Time's up - No answer\n`;
+      questionText += `⏰ Time's up - No answer\n`;
     } else if (isCorrect) {
-      reviewText += `✅ Your answer: ${escapeHtml(q.options[userChoice])}\n`;
+      questionText += `✅ Your answer: ${escapeHtml(q.options[userChoice])}\n`;
     } else {
-      reviewText += `❌ Your answer: ${escapeHtml(q.options[userChoice])}\n`;
-      reviewText += `✓ Correct: ${escapeHtml(q.options[q.correct])}\n`;
+      questionText += `❌ Your answer: ${escapeHtml(q.options[userChoice])}\n`;
+      questionText += `✓ Correct: ${escapeHtml(q.options[q.correct])}\n`;
     }
-    reviewText += `\n`;
+    reviewParts.push(questionText);
   });
 
-  bot.sendMessage(chatId, reviewText, { parse_mode: 'HTML' });
+  // Split into multiple messages if too long (Telegram limit: 4096 chars)
+  const reviewText = reviewParts.join('\n');
+  if (reviewText.length > 4000) {
+    // Send in chunks
+    let currentChunk = reviewParts[0];
+    for (let i = 1; i < reviewParts.length; i++) {
+      if ((currentChunk + reviewParts[i]).length > 4000) {
+        bot.sendMessage(chatId, currentChunk, { parse_mode: 'HTML' });
+        currentChunk = reviewParts[i];
+      } else {
+        currentChunk += '\n' + reviewParts[i];
+      }
+    }
+    if (currentChunk) {
+      bot.sendMessage(chatId, currentChunk, { parse_mode: 'HTML' });
+    }
+  } else {
+    bot.sendMessage(chatId, reviewText, { parse_mode: 'HTML' });
+  }
 }
 
 async function showLeaderboard(bot, chatId, quizId) {
@@ -141,16 +157,17 @@ async function showLeaderboard(bot, chatId, quizId) {
     return;
   }
 
-  let leaderboardText = `🏆 <b>Leaderboard: ${escapeHtml(quiz.title)}</b>\n\n`;
-
-  leaderboard.forEach((entry, index) => {
-    const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`;
+  const medals = ['🥇', '🥈', '🥉'];
+  const leaderboardLines = leaderboard.map((entry, index) => {
+    const medal = medals[index] || `${index + 1}.`;
     const name = entry.first_name || entry.username || 'Anonymous';
-    leaderboardText += `${medal} <b>${escapeHtml(name)}</b> - ${entry.score}/${quiz.questions.length} (${entry.total_time}s)\n`;
+    return `${medal} <b>${escapeHtml(name)}</b> - ${entry.score}/${quiz.questions.length} (${entry.total_time}s)`;
   });
 
   const shareLink = getShareableLink(quizId);
-  leaderboardText += `\n🔗 Share: ${shareLink}`;
+  const leaderboardText = `🏆 <b>Leaderboard: ${escapeHtml(quiz.title)}</b>\n\n` +
+    leaderboardLines.join('\n') +
+    `\n\n🔗 Share: ${shareLink}`;
 
   bot.sendMessage(chatId, leaderboardText, { parse_mode: 'HTML' });
 }

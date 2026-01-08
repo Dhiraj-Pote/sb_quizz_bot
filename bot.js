@@ -40,9 +40,20 @@ server.listen(PORT, () => {
 setupCommands(bot);
 setupCallbacks(bot);
 
-// Error handling
+// Setup poll answer handler
+const { handlePollAnswer } = require('./quizLogic');
+bot.on('poll_answer', async (pollAnswer) => {
+  await handlePollAnswer(bot, pollAnswer);
+});
+
+// Error handling with rate limiting awareness
 bot.on('polling_error', (error) => {
-  console.error('Polling error:', error.code, error.message);
+  if (error.code === 'ETELEGRAM' && error.response?.statusCode === 429) {
+    const retryAfter = error.response.body?.parameters?.retry_after || 60;
+    console.warn(`⚠️  Rate limited. Retrying after ${retryAfter}s`);
+  } else {
+    console.error('Polling error:', error.code, error.message);
+  }
 });
 
 bot.on('error', (error) => {
