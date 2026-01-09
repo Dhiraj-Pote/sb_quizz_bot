@@ -9,7 +9,7 @@ async function showMainMenu(bot, chatId) {
   // Get top player
   const topPlayer = getTopPlayer();
   const topPlayerText = topPlayer 
-    ? `🏆 Top Player: ${escapeHtml(topPlayer.first_name || topPlayer.username || 'Unknown')} Prabhu\n\n` 
+    ? `🥇 Top Scorer: ${escapeHtml(topPlayer.first_name || topPlayer.username || 'Unknown')} Prabhu\n\n` 
     : '';
   
   const menuText = `🌸 <b>Śrīmad Bhāgavatam Quiz</b> 🌸\n` +
