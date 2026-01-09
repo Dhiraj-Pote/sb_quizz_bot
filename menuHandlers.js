@@ -9,15 +9,15 @@ async function showMainMenu(bot, chatId) {
   // Get top player
   const topPlayer = getTopPlayer();
   const topPlayerText = topPlayer 
-    ? `🥇 Top Scorer: ${escapeHtml(topPlayer.first_name || topPlayer.username || 'Unknown')} Prabhu\n\n` 
+    ? `🥇 <b>Top Score:</b> ${escapeHtml(topPlayer.first_name || topPlayer.username || 'Unknown')} Prabhu\n\n` 
     : '';
   
   const menuText = `🌸 <b>Śrīmad Bhāgavatam Quiz</b> 🌸\n` +
     `<i>"nityaṁ bhāgavata-sevayā"</i>\n\n` +
-    `📊 <b>Available:</b> ${quizzes.length} Quizzes\n` +
+    `📜 <b>Available:</b> ${quizzes.length} Quizzes\n` +
     topPlayerText +
-    `• /quizzes — Browse topics\n` +
-    `• /leaderboard — View results`;
+    `🔹/quizzes — Select Chapters\n` +
+    `🔹/leaderboard — View results`;
 
   const keyboard = {
     inline_keyboard: [
