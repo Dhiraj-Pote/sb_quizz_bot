@@ -278,6 +278,75 @@ const QUIZZES = {
         correct: 1
       }
     ]
+  },
+  'quiz_3_23': {
+    id: 'quiz_3_23',
+    title: 'SB Canto 3 Chapter 23',
+    description: 'Śrīmad Bhāgavatam Quiz - Canto 3 Chapter 23',
+    createdDate: '2025-01-09',
+    live: true,
+    questions: [
+      {
+        question: "How was Devahūti's service compared to Bhavānī's service to Lord Śiva?",
+        options: ["Providing royal luxuries", "Undergoing tribulations and serving with great love", "Managing the kingdom", "Asking for mystic boons"],
+        correct: 1
+      },
+      {
+        question: "What qualities influence a husband who is 'not easily frustrated'?",
+        options: ["Beauty and clothing", "Intellectual debate", "Intimacy and service with great love", "Royal status and lineage"],
+        correct: 2
+      },
+      {
+        question: "Per the SB 3.23.7 purport, what is the result for a wife serving a husband like Kardama Muni?",
+        options: ["Becoming a famous queen", "Gaining all results of her husband's austerities and yoga", "Remaining a goddess in the material world", "Merging into her husband's soul"],
+        correct: 1
+      },
+      {
+        question: "What is the ultimate responsibility of a husband or parent toward dependents?",
+        options: ["Providing maximum sensory enjoyment", "Ensuring high social status", "Delivering the ward from material death", "Leaving a vast inheritance"],
+        correct: 2
+      },
+      {
+        question: "What is the primary 'relief' a husband or son must provide a woman?",
+        options: ["Continued material prosperity", "Spiritual instruction for the soul's advancement", "Physical assistance with household duties", "Inheritance of royal titles"],
+        correct: 1
+      },
+      {
+        question: "Per SB 3.23.56, what is the correct progression to the perfection of life?",
+        options: ["Work → Wealth → Family → Status", " Work → Education → Retirement → Peace", "Work → Fame → Charity → Rebirth", "Work → Religion → Renunciation → Devotional Service"],
+        correct: 3
+      },
+      {
+        question: "Per Text 56, a person is 'dead although breathing' if their work does not lead to:",
+        options: ["Maintaining family", "Devotional service to the Supreme Lord", "Becoming famous", "Renunciation"],
+        correct: 1
+      },
+      {
+        question: "According to Āyur-veda, why were nine daughters born instead of sons?",
+        options: ["The husband's discharge was greater", "  The sage wanted only daughters", "It was a random accident", " The female's passion/discharge was greater"],
+        correct: 3
+      },
+      {
+        question: "What is the shape of all planets according to Text 43?",
+        options: ["Flat like a map", "Square", "Round (Gola)", "Triangular"],
+        correct: 2
+      },
+      {
+        question: "Is a woman allowed to have a 'mala-snāna' (bathing up to the neck)?",
+        options: ["True", "False"],
+        correct: 0
+      },
+      {
+        question: "How did Kardama Muni create the giant aerial mansion?",
+        options: ["By hiring many workers", "By his yogic mystic power", "By asking his father-in-law", "By using modern technology"],
+        correct: 1
+      },
+      {
+        question: "What is the 'Kāma-śāstra' used for according to the purport?",
+        options: ["To learn how to fight wars", "To arrange a glorious sex life to produce good children", "To learn how to cook", "To study the stars"],
+        correct: 1
+      }
+    ]
   }
 };
 
