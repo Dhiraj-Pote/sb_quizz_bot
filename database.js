@@ -9,6 +9,9 @@ db.pragma('journal_mode = WAL');
 db.pragma('synchronous = NORMAL');
 db.pragma('cache_size = -64000'); // 64MB cache
 
+// Prepare statements once for better performance (will be initialized after tables are created)
+let statements = {};
+
 // Initialize database tables
 function initDatabase() {
   // Use a single transaction for all table creation
@@ -53,27 +56,27 @@ function initDatabase() {
     COMMIT;
   `);
 
+  // Now prepare statements after tables are created
+  statements = {
+    hasUserAttempted: db.prepare('SELECT has_attempted FROM users WHERE user_id = ? AND quiz_id = ?'),
+    markUserAttempted: db.prepare('INSERT OR REPLACE INTO users (user_id, quiz_id, username, first_name, has_attempted) VALUES (?, ?, ?, ?, 1)'),
+    saveResult: db.prepare('INSERT INTO results (user_id, quiz_id, username, first_name, score, total_time, user_answers) VALUES (?, ?, ?, ?, ?, ?, ?)'),
+    getUserResult: db.prepare('SELECT * FROM results WHERE user_id = ? AND quiz_id = ?'),
+    getLeaderboard: db.prepare('SELECT username, first_name, score, total_time FROM results WHERE quiz_id = ? ORDER BY score DESC, total_time ASC LIMIT 10'),
+    startQuizSession: db.prepare('INSERT OR REPLACE INTO active_quizzes (user_id, quiz_id, current_question, score, start_time, question_start_time, user_answers) VALUES (?, ?, 0, 0, ?, ?, ?)'),
+    getQuizState: db.prepare('SELECT * FROM active_quizzes WHERE user_id = ?'),
+    updateQuizState: db.prepare('UPDATE active_quizzes SET current_question = ?, score = ?, question_start_time = ?, user_answers = ? WHERE user_id = ?'),
+    deleteQuizState: db.prepare('DELETE FROM active_quizzes WHERE user_id = ?'),
+    clearUserResults: db.prepare('DELETE FROM results WHERE username = ? AND quiz_id = ?'),
+    clearUserAttempts: db.prepare('DELETE FROM users WHERE username = ? AND quiz_id = ?'),
+    listUsers: db.prepare('SELECT username, first_name, score FROM results WHERE quiz_id = ? ORDER BY score DESC')
+  };
+
   // Clean up any active quiz sessions on startup (bot restart)
   db.prepare('DELETE FROM active_quizzes').run();
   console.log('✓ Database initialized with WAL mode');
   console.log('✓ Cleaned up old quiz sessions');
 }
-
-// Prepare statements once for better performance
-const statements = {
-  hasUserAttempted: db.prepare('SELECT has_attempted FROM users WHERE user_id = ? AND quiz_id = ?'),
-  markUserAttempted: db.prepare('INSERT OR REPLACE INTO users (user_id, quiz_id, username, first_name, has_attempted) VALUES (?, ?, ?, ?, 1)'),
-  saveResult: db.prepare('INSERT INTO results (user_id, quiz_id, username, first_name, score, total_time, user_answers) VALUES (?, ?, ?, ?, ?, ?, ?)'),
-  getUserResult: db.prepare('SELECT * FROM results WHERE user_id = ? AND quiz_id = ?'),
-  getLeaderboard: db.prepare('SELECT username, first_name, score, total_time FROM results WHERE quiz_id = ? ORDER BY score DESC, total_time ASC LIMIT 10'),
-  startQuizSession: db.prepare('INSERT OR REPLACE INTO active_quizzes (user_id, quiz_id, current_question, score, start_time, question_start_time, user_answers) VALUES (?, ?, 0, 0, ?, ?, ?)'),
-  getQuizState: db.prepare('SELECT * FROM active_quizzes WHERE user_id = ?'),
-  updateQuizState: db.prepare('UPDATE active_quizzes SET current_question = ?, score = ?, question_start_time = ?, user_answers = ? WHERE user_id = ?'),
-  deleteQuizState: db.prepare('DELETE FROM active_quizzes WHERE user_id = ?'),
-  clearUserResults: db.prepare('DELETE FROM results WHERE username = ? AND quiz_id = ?'),
-  clearUserAttempts: db.prepare('DELETE FROM users WHERE username = ? AND quiz_id = ?'),
-  listUsers: db.prepare('SELECT username, first_name, score FROM results WHERE quiz_id = ? ORDER BY score DESC')
-};
 
 // User operations
 function hasUserAttempted(userId, quizId) {
