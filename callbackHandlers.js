@@ -3,7 +3,7 @@ const { ADMIN_USERNAMES } = require('./config');
 const { getQuiz, getAvailableQuizzes } = require('./quizData');
 const { hasUserAttempted, startQuizSession, getQuizState } = require('./database');
 const { getShareableLink, escapeHtml } = require('./utils');
-const { showMainMenu, showQuizList, showQuizDetails, showReview, showLeaderboard } = require('./menuHandlers');
+const { showMainMenu, showQuizList, showQuizDetails, showReview, showLeaderboard, showCombinedLeaderboard } = require('./menuHandlers');
 const { sendQuestion, clearTimer } = require('./quizLogic');
 
 function setupCallbacks(bot) {
@@ -24,12 +24,21 @@ function setupCallbacks(bot) {
       else if (data === 'view_leaderboards') {
         const quizzes = getAvailableQuizzes();
         const keyboard = {
-          inline_keyboard: quizzes.map(q => [
-            { text: `🏆 ${q.title}`, callback_data: `lb_${q.id}` }
-          ])
+          inline_keyboard: [
+            [{ text: '🌟 Combined Leaderboard', callback_data: 'lb_combined' }]
+          ]
         };
-        keyboard.inline_keyboard.push([{ text: '◀️ Back', callback_data: 'back_main' }]);
-        bot.sendMessage(chatId, '🏆 <b>Select a quiz to view its leaderboard:</b>', {
+        
+        // Add chapter-wise leaderboards
+        quizzes.forEach(q => {
+          keyboard.inline_keyboard.push([
+            { text: `📖 ${q.title}`, callback_data: `lb_${q.id}` }
+          ]);
+        });
+        
+        keyboard.inline_keyboard.push([{ text: '◀️ Back to Main Menu', callback_data: 'back_main' }]);
+        
+        bot.sendMessage(chatId, '🏆 <b>Select Leaderboard:</b>', {
           parse_mode: 'HTML',
           reply_markup: keyboard
         });
@@ -66,7 +75,12 @@ function setupCallbacks(bot) {
       }
       else if (data.startsWith('lb_')) {
         const quizId = data.substring(3);
-        await showLeaderboard(bot, chatId, quizId);
+        
+        if (quizId === 'combined') {
+          await showCombinedLeaderboard(bot, chatId);
+        } else {
+          await showLeaderboard(bot, chatId, quizId);
+        }
       }
       else if (data.startsWith('review_')) {
         const quizId = data.substring(7);
@@ -78,11 +92,20 @@ function setupCallbacks(bot) {
         if (!quiz) return;
         const link = getShareableLink(quizId);
         
+        const keyboard = {
+          inline_keyboard: [
+            [{ text: '◀️ Back to Quiz', callback_data: `quiz_${quizId}` }]
+          ]
+        };
+        
         bot.sendMessage(chatId,
           `🔗 <b>Share "${escapeHtml(quiz.title)}"</b>\n\n` +
           `${link}\n\n` +
           `<i>Forward this link to friends!</i>`,
-          { parse_mode: 'HTML' }
+          { 
+            parse_mode: 'HTML',
+            reply_markup: keyboard
+          }
         );
       }
     } catch (error) {

@@ -56,13 +56,24 @@ function setupCommands(bot) {
     const quizId = match[1]?.trim();
 
     if (!quizId) {
+      // Show combined leaderboard selection menu
       const quizzes = getAvailableQuizzes();
       const keyboard = {
-        inline_keyboard: quizzes.map(q => [
-          { text: `🏆 ${q.title}`, callback_data: `lb_${q.id}` }
-        ])
+        inline_keyboard: [
+          [{ text: '🌟 Combined Leaderboard', callback_data: 'lb_combined' }]
+        ]
       };
-      bot.sendMessage(chatId, '🏆 <b>Select a quiz to view its leaderboard:</b>', {
+      
+      // Add chapter-wise leaderboards
+      quizzes.forEach(q => {
+        keyboard.inline_keyboard.push([
+          { text: `📖 ${q.title}`, callback_data: `lb_${q.id}` }
+        ]);
+      });
+      
+      keyboard.inline_keyboard.push([{ text: '◀️ Back to Main Menu', callback_data: 'back_main' }]);
+      
+      bot.sendMessage(chatId, '🏆 <b>Select Leaderboard:</b>', {
         parse_mode: 'HTML',
         reply_markup: keyboard
       });

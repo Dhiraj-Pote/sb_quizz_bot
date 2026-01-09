@@ -129,6 +129,57 @@ function listUsers(quizId) {
   return statements.listUsers.all(quizId);
 }
 
+// Get combined leaderboard across all quizzes
+function getCombinedLeaderboard(limit = 10) {
+  const query = `
+    SELECT 
+      user_id,
+      username,
+      first_name,
+      SUM(score) as total_score,
+      COUNT(DISTINCT quiz_id) as quizzes_taken
+    FROM results
+    GROUP BY user_id
+    ORDER BY total_score DESC, quizzes_taken DESC
+    LIMIT ?
+  `;
+  return db.prepare(query).all(limit);
+}
+
+// Get top player (highest combined score)
+function getTopPlayer() {
+  const query = `
+    SELECT 
+      username,
+      first_name,
+      SUM(score) as total_score,
+      COUNT(DISTINCT quiz_id) as quizzes_taken
+    FROM results
+    GROUP BY user_id
+    ORDER BY total_score DESC, quizzes_taken DESC
+    LIMIT 1
+  `;
+  return db.prepare(query).get();
+}
+
+// Get user's total statistics
+function getUserTotalStats(userId) {
+  const query = `
+    SELECT 
+      SUM(score) as total_score,
+      COUNT(DISTINCT quiz_id) as quizzes_taken
+    FROM results
+    WHERE user_id = ?
+  `;
+  return db.prepare(query).get(userId);
+}
+
+// Get quiz IDs that a user has taken
+function getUserQuizIds(userId) {
+  const query = `SELECT DISTINCT quiz_id FROM results WHERE user_id = ? ORDER BY timestamp`;
+  return db.prepare(query).all(userId).map(row => row.quiz_id);
+}
+
 function closeDatabase() {
   db.close();
 }
@@ -140,6 +191,10 @@ module.exports = {
   saveResult,
   getUserResult,
   getLeaderboard,
+  getCombinedLeaderboard,
+  getTopPlayer,
+  getUserTotalStats,
+  getUserQuizIds,
   startQuizSession,
   getQuizState,
   updateQuizState,

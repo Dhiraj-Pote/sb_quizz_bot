@@ -1,21 +1,28 @@
 // Menu and UI handlers
-const { getQuiz, getAvailableQuizzes } = require('./quizData');
-const { hasUserAttempted, getLeaderboard, getUserResult } = require('./database');
+const { getQuiz, getAvailableQuizzes, getAllQuizzes } = require('./quizData');
+const { hasUserAttempted, getLeaderboard, getUserResult, getTopPlayer, getCombinedLeaderboard, getUserQuizIds } = require('./database');
 const { getShareableLink, escapeHtml } = require('./utils');
 
 async function showMainMenu(bot, chatId) {
   const quizzes = getAvailableQuizzes();
   
-  const menuText = `🎯 <b>Welcome to the Quiz Bot!</b>\n\n` +
-    `📚 <b>Available Quizzes:</b> ${quizzes.length}\n\n` +
-    `Choose a quiz below or use:\n` +
-    `• /quizzes - List all quizzes\n` +
-    `• /leaderboard - View leaderboards`;
+  // Get top player
+  const topPlayer = getTopPlayer();
+  const topPlayerText = topPlayer 
+    ? `🏆 Top Player: ${escapeHtml(topPlayer.first_name || topPlayer.username || 'Unknown')} Prabhu\n\n` 
+    : '';
+  
+  const menuText = `🌸 <b>Śrīmad Bhāgavatam Quiz</b> 🌸\n` +
+    `<i>"nityaṁ bhāgavata-sevayā"</i>\n\n` +
+    `📊 <b>Available:</b> ${quizzes.length} Quizzes\n` +
+    topPlayerText +
+    `• /quizzes — Browse topics\n` +
+    `• /leaderboard — View results`;
 
   const keyboard = {
     inline_keyboard: [
       [{ text: '📚 Browse All Quizzes', callback_data: 'browse_quizzes' }],
-      [{ text: '🏆 View Leaderboards', callback_data: 'view_leaderboards' }]
+      [{ text: '🏆 View Leaderboard', callback_data: 'lb_combined' }]
     ]
   };
 
@@ -38,6 +45,9 @@ async function showQuizList(bot, chatId) {
       { text: `📝 ${q.title}`, callback_data: `quiz_${q.id}` }
     ])
   };
+  
+  // Add back button
+  keyboard.inline_keyboard.push([{ text: '◀️ Back to Main Menu', callback_data: 'back_main' }]);
 
   bot.sendMessage(chatId, '📚 <b>All Available Quizzes</b>\n\n', {
     parse_mode: 'HTML',
@@ -122,6 +132,13 @@ async function showReview(bot, chatId, userId, quizId) {
 
   // Split into multiple messages if too long (Telegram limit: 4096 chars)
   const reviewText = reviewParts.join('\n');
+  
+  const keyboard = {
+    inline_keyboard: [
+      [{ text: '◀️ Back to Quiz', callback_data: `quiz_${quizId}` }]
+    ]
+  };
+  
   if (reviewText.length > 4000) {
     // Send in chunks
     let currentChunk = reviewParts[0];
@@ -134,10 +151,16 @@ async function showReview(bot, chatId, userId, quizId) {
       }
     }
     if (currentChunk) {
-      bot.sendMessage(chatId, currentChunk, { parse_mode: 'HTML' });
+      bot.sendMessage(chatId, currentChunk, { 
+        parse_mode: 'HTML',
+        reply_markup: keyboard
+      });
     }
   } else {
-    bot.sendMessage(chatId, reviewText, { parse_mode: 'HTML' });
+    bot.sendMessage(chatId, reviewText, { 
+      parse_mode: 'HTML',
+      reply_markup: keyboard
+    });
   }
 }
 
@@ -151,8 +174,15 @@ async function showLeaderboard(bot, chatId, quizId) {
   }
 
   if (leaderboard.length === 0) {
+    const keyboard = {
+      inline_keyboard: [
+        [{ text: '◀️ Back to Leaderboards', callback_data: 'view_leaderboards' }]
+      ]
+    };
+    
     bot.sendMessage(chatId, `🏆 <b>Leaderboard: ${escapeHtml(quiz.title)}</b>\n\nNo results yet. Be the first!`, {
-      parse_mode: 'HTML'
+      parse_mode: 'HTML',
+      reply_markup: keyboard
     });
     return;
   }
@@ -169,7 +199,66 @@ async function showLeaderboard(bot, chatId, quizId) {
     leaderboardLines.join('\n') +
     `\n\n🔗 Share: ${shareLink}`;
 
-  bot.sendMessage(chatId, leaderboardText, { parse_mode: 'HTML' });
+  const keyboard = {
+    inline_keyboard: [
+      [{ text: '◀️ Back to Leaderboards', callback_data: 'view_leaderboards' }]
+    ]
+  };
+
+  bot.sendMessage(chatId, leaderboardText, { 
+    parse_mode: 'HTML',
+    reply_markup: keyboard
+  });
+}
+
+async function showCombinedLeaderboard(bot, chatId) {
+  const leaderboard = getCombinedLeaderboard(10);
+
+  if (leaderboard.length === 0) {
+    const keyboard = {
+      inline_keyboard: [
+        [{ text: '◀️ Back', callback_data: 'back_main' }]
+      ]
+    };
+    
+    bot.sendMessage(chatId, `🏆 <b>Combined Leaderboard</b>\n\nNo results yet. Be the first to take a quiz!`, {
+      parse_mode: 'HTML',
+      reply_markup: keyboard
+    });
+    return;
+  }
+
+  const medals = ['🥇', '🥈', '🥉'];
+  const leaderboardLines = leaderboard.map((entry, index) => {
+    const medal = medals[index] || `${index + 1}.`;
+    const name = entry.first_name || entry.username || 'Anonymous';
+    
+    // Get the quiz IDs this user has taken
+    const userQuizIds = getUserQuizIds(entry.user_id);
+    
+    // Calculate total questions for those specific quizzes
+    const totalQuestions = userQuizIds.reduce((sum, quizId) => {
+      const quiz = getQuiz(quizId);
+      return sum + (quiz ? quiz.questions.length : 0);
+    }, 0);
+    
+    return `${medal} <b>${escapeHtml(name)}</b> - ${entry.total_score}/${totalQuestions} (${entry.quizzes_taken} quizzes)`;
+  });
+
+  const leaderboardText = `🏆 <b>Combined Leaderboard</b>\n` +
+    `<i>Total scores across all quizzes</i>\n\n` +
+    leaderboardLines.join('\n');
+
+  const keyboard = {
+    inline_keyboard: [
+      [{ text: '◀️ Back', callback_data: 'back_main' }]
+    ]
+  };
+
+  bot.sendMessage(chatId, leaderboardText, { 
+    parse_mode: 'HTML',
+    reply_markup: keyboard
+  });
 }
 
 module.exports = {
@@ -177,5 +266,6 @@ module.exports = {
   showQuizList,
   showQuizDetails,
   showReview,
-  showLeaderboard
+  showLeaderboard,
+  showCombinedLeaderboard
 };

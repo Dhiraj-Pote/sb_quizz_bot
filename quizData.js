@@ -1,7 +1,7 @@
 // Quiz Library - All quiz data
 const QUIZZES = {
-  'quiz_1': {
-    id: 'quiz_1',
+  'quiz_3_17': {
+    id: 'quiz_3_17',
     title: 'SB Canto 3 Chapter 17',
     description: 'Śrīmad Bhāgavatam Quiz - Canto 3 Chapter 17',
     createdDate: '2025-12-23',
@@ -34,8 +34,8 @@ const QUIZZES = {
       }
     ]
   },
-  'quiz_2': {
-    id: 'quiz_2',
+  'quiz_3_18': {
+    id: 'quiz_3_18',
     title: 'SB Canto 3 Chapter 18',
     description: 'Śrīmad Bhāgavatam Quiz - Canto 3 Chapter 18',
     createdDate: '2025-12-24',
@@ -63,8 +63,8 @@ const QUIZZES = {
       }
     ]
   },
-  'quiz_3': {
-    id: 'quiz_3',
+  'quiz_3_19': {
+    id: 'quiz_3_19',
     title: 'SB Canto 3 Chapter 19',
     description: 'Śrīmad Bhāgavatam Quiz - Canto 3 Chapter 19',
     createdDate: '2025-12-25',
@@ -112,8 +112,8 @@ const QUIZZES = {
       }
     ]
   },
-  'quiz_4': {
-    id: 'quiz_4',
+  'quiz_3_20': {
+    id: 'quiz_3_20',
     title: 'SB Canto 3 Chapter 20',
     description: 'Śrīmad Bhāgavatam Quiz - Canto 3 Chapter 20',
     createdDate: '2025-12-26',
@@ -161,8 +161,8 @@ const QUIZZES = {
       }
     ]
   },
-  'quiz_5': {
-    id: 'quiz_5',
+  'quiz_3_21': {
+    id: 'quiz_3_21',
     title: 'SB Canto 3 Chapter 21',
     description: 'Śrīmad Bhāgavatam Quiz - Canto 3 Chapter 21',
     createdDate: '2025-12-27',
@@ -220,8 +220,8 @@ const QUIZZES = {
       }
     ]
   },
-  'quiz_6': {
-    id: 'quiz_6',
+  'quiz_3_22': {
+    id: 'quiz_3_22',
     title: 'SB Canto 3 Chapter 22',
     description: 'Śrīmad Bhāgavatam Quiz - Canto 3 Chapter 22',
     createdDate: '2025-01-08',

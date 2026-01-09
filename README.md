@@ -97,11 +97,12 @@ node bot.js
 Edit `quizData.js` and add a new quiz object to the `QUIZZES` constant:
 
 ```javascript
-'quiz_6': {
-  id: 'quiz_6',
-  title: 'Your Quiz Title',
-  description: 'Quiz description',
-  createdDate: '2025-12-28',
+'quiz_3_23': {
+  id: 'quiz_3_23',
+  title: 'SB Canto 3 Chapter 23',
+  description: 'Śrīmad Bhāgavatam Quiz - Canto 3 Chapter 23',
+  createdDate: '2025-01-09',
+  live: true,
   questions: [
     {
       question: "Your question?",
