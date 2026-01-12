@@ -364,9 +364,9 @@ const QUIZZES = {
       "question": "What is the fundamental difference between a goṣṭhy-ānandī and an ātmānandī sannyāsī?",
       "options": [
         "A goṣṭhy-ānandī lives in a forest, while an ātmānandī lives in a city",
-        "A goṣṭhy-ānandī is a 'transcendental fraud,' while an ātmānandī is a genuine devotee",
-        "A goṣṭhy-ānandī avoids all disciples, while an ātmānandī amasses wealth from the public",
-        "A goṣṭhy-ānandī is a preacher who organizes missionary activities, while an ātmānandī is self-satisfied and remains alone with God"
+        "A goṣṭhy-ānandī is a fraud, while ātmānandī a genuine devotee",
+        "A goṣṭhy-ānandī avoids disciples, while an ātmānandī amasses wealth",
+        "A goṣṭhy-ānandī has taken preaching missions, ātmānandī remains absorbed with God"
       ],
       "correct": 1
     },
