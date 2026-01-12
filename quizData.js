@@ -347,6 +347,80 @@ const QUIZZES = {
         correct: 1
       }
     ]
+  },
+  'quiz_3_24': {
+    id: 'quiz_3_24',
+    title: 'SB Canto 3 Chapter 24',
+    description: 'Śrīmad Bhāgavatam Quiz - Canto 3 Chapter 24',
+    createdDate: '2025-01-09',
+    live: true,
+    questions: [
+      {
+        question: "In SB 3.24.6, the Lord's appearance is compared to?",
+        options: ["Lightning appearing in a dark cloud", "The sun rising over the horizon", "Fire kindled from wood", "A lotus blooming in a lake"],
+        correct: 2
+      },
+      {
+      "question": "What is the fundamental difference between a goṣṭhy-ānandī and an ātmānandī sannyāsī?",
+      "options": [
+        "A goṣṭhy-ānandī lives in a forest, while an ātmānandī lives in a city",
+        "A goṣṭhy-ānandī is a 'transcendental fraud,' while an ātmānandī is a genuine devotee",
+        "A goṣṭhy-ānandī avoids all disciples, while an ātmānandī amasses wealth from the public",
+        "A goṣṭhy-ānandī is a preacher who organizes missionary activities, while an ātmānandī is self-satisfied and remains alone with God"
+      ],
+      "correct": 1
+    },
+      {
+        question: "Prahlāda Mahārāja says that a family without God-consciousness is like?",
+        options: ["A burning forest fire", "A 'blind well' (gṛham andha-kūpam)", "A boat without a rudder", "A desert without water"],
+        correct: 1
+      },
+      {
+        question: "What must be present for devotion (Bhakti) to have meaning?",
+        options: ["Great wealth, followers, and high birth", "Knowledge, renunciation, and mystic power", "The devotee (bhakta), the process (bhakti), and the Lord (Bhagavān)", "Severe penance, fasting, and silence"],
+        correct: 2
+      },
+      {
+        question: "What is called as the 'last snare of Māyā'?",
+        options: ["The desire for material wealth and fame", "The idea that the individual soul is equal to God", "Attachment to one's wife and children", "The fear of death and rebirth"],
+        correct: 1
+      },
+      {
+      "question": "What is the precise definition of jñāna || vijñāna?",
+      "options": [
+        "Research based on mental speculation || practical inventions",
+        "Scriptural knowledge received through disciplic succession || its practical application",
+        "Gaining theriotical knowledge || & applying it",
+        "Studying the physical laws of nature || building machines"
+      ],
+      "correct": 1
+    },
+      {
+        question: "According to Text 13, what is the 'proper' way a son or disciple should accept the commands of a father or guru?",
+        options: ["By analyzing if the order is convenient", "By following only the parts they agree with", "By waiting until they are older to follow instructions", "By saying 'Yes, sir' and obeying without duplicity"],
+        correct: 3
+      },
+      {
+        question: "What is the meaning of marriage according to 'yathā-śīlaṁ yathā-ruci'?",
+        options: ["Marriage based on political power and status", "Marriage based on matching character and taste", "Marriage based solely on physical attraction", "Marriage based on the accumulation of dowry"],
+        correct: 1
+      },
+      {
+        question: "When the Lord is described as 'arūpiṇaḥ' (without form), what does it specifically mean?",
+        options: ["He is an impersonal void", "He is a temporary manifestation of energy", "He has no material form, but possesses transcendental forms", "He has no shape or distinct personality"],
+        correct: 1
+      },
+      {
+        question: "What is the Vedic injunction regarding (Pañcāśordhvaṁ vanaṁ vrajet)?",
+        options: ["A man should start a new career after age fifty", "A man MUST renovate his house after age fifty", "A man should renounce worldly life after age fifty", "A man should travel for business after age fifty"],
+        correct: 2
+      },
+      {
+        question: "What is the primary mission of Lord Kapila's Sāṅkhya philosophy?",
+        options: ["To provide methods for increasing bodily comfort", "to uproot the deep-rooted desire for fruitive activities (karma).", "To explain the laws of material physics and chemistry", "To organize a new political system for society"],
+        correct: 1
+      }
+    ]
   }
 };
 
