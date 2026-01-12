@@ -368,7 +368,7 @@ const QUIZZES = {
         "A goṣṭhy-ānandī avoids disciples, while an ātmānandī amasses wealth",
         "A goṣṭhy-ānandī has taken preaching missions, ātmānandī remains absorbed with God"
       ],
-      "correct": 1
+      "correct": 3
     },
       {
         question: "Prahlāda Mahārāja says that a family without God-consciousness is like?",
@@ -378,7 +378,7 @@ const QUIZZES = {
       {
         question: "What must be present for devotion (Bhakti) to have meaning?",
         options: ["Great wealth, followers, and high birth", "Knowledge, renunciation, and mystic power", "The devotee (bhakta), the process (bhakti), and the Lord (Bhagavān)", "Severe penance, fasting, and silence"],
-        correct: 2
+        correct: 3
       },
       {
         question: "What is called as the 'last snare of Māyā'?",
@@ -408,7 +408,7 @@ const QUIZZES = {
       {
         question: "When the Lord is described as 'arūpiṇaḥ' (without form), what does it specifically mean?",
         options: ["He is an impersonal void", "He is a temporary manifestation of energy", "He has no material form, but possesses transcendental forms", "He has no shape or distinct personality"],
-        correct: 1
+        correct: 2
       },
       {
         question: "What is the Vedic injunction regarding (Pañcāśordhvaṁ vanaṁ vrajet)?",
