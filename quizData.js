@@ -378,7 +378,7 @@ const QUIZZES = {
       {
         question: "What must be present for devotion (Bhakti) to have meaning?",
         options: ["Great wealth, followers, and high birth", "Knowledge, renunciation, and mystic power", "The devotee (bhakta), the process (bhakti), and the Lord (Bhagavān)", "Severe penance, fasting, and silence"],
-        correct: 3
+        correct: 2
       },
       {
         question: "What is called as the 'last snare of Māyā'?",
