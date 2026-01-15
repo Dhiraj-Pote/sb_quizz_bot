@@ -7,6 +7,13 @@ const { QUIZZES } = require('./quizData');
 const { setupCommands } = require('./commandHandlers');
 const { setupCallbacks } = require('./callbackHandlers');
 
+// Validate bot token
+if (!BOT_TOKEN) {
+  console.error('❌ ERROR: BOT_TOKEN environment variable is not set!');
+  console.error('Please set BOT_TOKEN in Railway dashboard Variables tab.');
+  process.exit(1);
+}
+
 // Initialize database
 initDatabase();
 
