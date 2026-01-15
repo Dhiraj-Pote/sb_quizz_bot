@@ -421,6 +421,71 @@ const QUIZZES = {
         correct: 1
       }
     ]
+  },
+  'quiz_3_25': {
+    id: 'quiz_3_25',
+    title: 'SB Canto 3 Chapter 25',
+    description: 'Śrīmad Bhāgavatam Quiz - Canto 3 Chapter 25',
+    createdDate: '2025-01-12',
+    live: true,
+    questions: [
+      {
+        question: "For Proper Advancement in KC, Bhagavatam says whose association is needed for discussing the pastimes and activities of the Supreme Personality of Godhead ?",
+        options: ["Any Devotees Assciation ", "Bhagavta Saptah", "Association of Pure Devotees", "Doesn't matter as long as listener is attentive & Serious"],
+        correct: 2
+      },
+      {
+        question: "What is the fundamental difference between sense gratification and devotional service?",
+        options: ["Sense gratification is temporary (asat); bhakti is eternal (sad-indriya)", "Sense gratification uses senses; bhakti requires stopping all senses", "Gratification is for humans; bhakti is only for demigods", "There is no difference as long as the performer is happy"],
+        correct: 0
+      },
+    
+      {
+        question: "How does the 'royal road to liberation' contrast with the 'door to hell'?",
+        options: ["Royal road: total mental void; Door to hell: any attachment at all", "Royal road: serving a mahātmā; Door to hell: serving gross materialists", "Royal road: wearing saffron; Door to hell: living as a householder", "Royal road: material progress; Door to hell: ignoring career growth"],
+        correct: 1
+      },
+      {
+        question: "Why is a sādhu described as both tolerant (titikṣavaḥ) and merciful (kāruṇikāḥ)?",
+        options: ["He has no desires and gives money to the poor", "He follows scriptural rules but is only merciful to his disciples", "He preaches to deliver souls and endures the ill-treatment that follows", "He is indifferent to the world but performs miracles to cure diseases"],
+        correct: 2
+      },
+      {
+        question: "Why are devotees (sādhus) unaffected by material miseries (trividhā-tāpā)?",
+        options: ["They use mystic yoga to numb their physical senses to pain", "They are always absorbed in hearing and chanting the Lord's glories", "The Lord removes all physical challenges from their lives", "They have accumulated enough pious karma to avoid all suffering"],
+        correct: 1
+      },
+      {
+        question: "What happens to a person who develops attraction for hearing about the Lord?",
+        options: ["They become more attached to their family and wealth", "They gain the power to control other people's minds", "They stop all work and remain silent forever", "They become indifferent to material enjoyment and follow yoga"],
+        correct: 3
+      },
+      {
+        question: "Why is Bhakti-yoga called 'the arrow' (bhagavad-bāṇaḥ)?",
+        options: ["It is used to destroy the physical body during meditation", "It targets the Lord directly, preventing the soul from 'falling back'", "It is the slowest path and takes many births to hit the target", "It aims to merge the soul into the void where it stops existing"],
+        correct: 1
+      },
+      {
+        question: "Why is unmotivated bhakti (animittā) superior to salvation (mukti)?",
+        options: ["Bhakti is the soul's natural active life; salvation is just absence of pain", "Salvation is a myth; bhakti provides material wealth", "Bhakti allows you to control demigods who manage your senses", "Salvation is too much hard work; bhakti is easy and lazy"],
+        correct: 0
+      },
+      {
+        question: "How is the 'subtle body' (kośam) removed?",
+        options: ["Through intense mental suppression and silence", "By gaining perfect knowledge of material elements", "As a natural side effect of devotional service", "Through physical breath control and yoga postures"],
+        correct: 2
+      },
+      {
+        question: "Why is 'merging into oneness' (ekātmatām) considered hellish by devotees?",
+        options: ["It kills the soul's ability for active service and glorifying the Lord", "Merging is a painful physical process that takes millions of years", "They are afraid of the bright light of the brahmajyoti", "They want to become greater than the Lord instead of equal"],
+        correct: 0
+      },
+      {
+        question: "Why does the Lord appear in material forms like wood or stone (Arcā)?",
+        options: ["Because God is limited and can only exist in material objects", "The original form of God is a myth created for temple worship", "To trick atheists into thinking God is just a statue", "To allow our material senses to see and serve Him in our current state"],
+        correct: 3
+      }
+    ]
   }
 };
 
