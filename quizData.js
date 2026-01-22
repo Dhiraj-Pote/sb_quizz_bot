@@ -486,6 +486,115 @@ const QUIZZES = {
         correct: 3
       }
     ]
+  },
+  'quiz_3_26': {
+    id: 'quiz_3_26',
+    title: 'SB Canto 3 Chapter 26',
+    description: 'Śrīmad Bhāgavatam Quiz - Canto 3 Chapter 26',
+    createdDate: '2026-01-22',
+    live: true,
+    questions: [
+      {
+        question: "What is the correct sequence of evolution of Material elements as stated in Sankhya Philosophy?",
+        options: [
+          "Pradhāna → Mahat → Prakṛti → Sound (ether) → Touch (air) → Form (fire) → Taste (water) → Smell (earth)",
+          "Prakṛti → Pradhāna → Mahat → Sound (ether) → Touch (air) → Form (fire) → Taste (water) → Smell (earth)",
+          "Pradhāna → Prakṛti → Mahat → False ego → Sound (ether) → Touch (air) → Form (fire) → Taste (water) → Smell (earth)",
+          "Mahat → Prakṛti → Pradhāna → Sound (ether) → Touch (air) → Form (fire) → Taste (water) → Smell (earth)"
+        ],
+        correct: 2
+      },
+      {
+        question: "According to SB 3.26.9, what is the key difference between Material Nature and the Cosmic Manifestation?",
+        options: [
+          "The cosmos exists independently of God's glance or will.",
+          "Nature is a temporary dream, but the cosmos is an eternal reality.",
+          "Nature is an eternal energy (sat), while the cosmos is temporary (asat).",
+          "Both are illusions that have no actual existence at any time."
+        ],
+        correct: 2
+      },
+      {
+        question: "Why is the soul called 'dependent' (pāra-tantryam) despite being a master?",
+        options: [
+          "It is a pastime of the soul to pretend it has no power or choice.",
+          "It is forced by nature to act out the consequences of its material desires.",
+          "It must rely on food and water to maintain its spiritual existence.",
+          "It cannot remember its past lives without the help of material science."
+        ],
+        correct: 1
+      },
+      {
+        question: "According to SB 3.26.16, what is the root cause of the fear of death?",
+        options: [
+          "The natural biological instinct of every living cell to survive.",
+          "Not having enough time to complete one's material duties and goals.",
+          "The realization that the soul will be destroyed by the time factor.",
+          "Identifying with the material body due to the delusion of false ego."
+        ],
+        correct: 3
+      },
+      {
+        question: "What is the soul's mistake while in the material body?",
+        options: [
+          "It wrongly claims credit for actions performed by nature's modes.",
+          "It forgets how to control the material elements.",
+          "It stops the mind from thinking clearly.",
+          "It tries to kill its own consciousness to find peace."
+        ],
+        correct: 0
+      },
+      {
+        question: "According to SB 3.26.19, why is it impossible for material science to 'create' life?",
+        options: [
+          "Because life is a spiritual seed from God, not a product of material elements.",
+          "Because scientists lack the proper laboratory equipment to see the soul.",
+          "Because material nature refuses to cooperate with humans.",
+          "Because life only appears after the universe is billions of years old."
+        ],
+        correct: 0
+      },
+      {
+        question: "According to SB 3.26.3, what is the origin of consciousness?",
+        options: [
+          "It is a temporary energy created by the sun and moon.",
+          "It is a chemical reaction that occurs when matter combines.",
+          "It is the eternal quality of the soul, existing without beginning.",
+          "It is a mental illusion that disappears at the time of death."
+        ],
+        correct: 2
+      },
+      {
+        question: "What is the specific difference between the roles of the Lord as Supersoul and as Time?",
+        options: [
+          "The Supersoul is a material element, while Time is a spiritual personality.",
+          "The Supersoul guides from within, while Time manages the external elements.",
+          "The Supersoul destroys the body, while Time witnesses the soul's desires.",
+          "Both roles are identical and serve no distinct purpose for the soul."
+        ],
+        correct: 1
+      },
+      {
+        question: "According to SB 3.26.5, why are there 8,400,000 different species of life?",
+        options: [
+          "Because material nature creates varied forms based on the three modes to cover the soul's knowledge.",
+          "Because the soul changes its nature and becomes material over time.",
+          "Because the Supreme Lord is also affected by the modes and changes His form.",
+          "Because the souls evolved from chemicals into different complex structures."
+        ],
+        correct: 0
+      },
+      {
+        question: "According to SB 3.26.17, what is the role of Time (Kāla) in the creation?",
+        options: [
+          "It is a human invention used to measure the change of seasons.",
+          "It is a force that destroys the Lord’s ability to control nature.",
+          "It is a material element that exists independently of God's will.",
+          "It is the Lord’s influence that agitates neutral nature to start variety."
+        ],
+        correct: 3
+      }
+    ]
   }
 };
 
