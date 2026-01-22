@@ -51,7 +51,7 @@ async function showCantos(bot, chatId) {
     const canto1Id = cantoIds[i];
     const canto1 = cantos[canto1Id];
     const button1 = {
-      text: canto1.active ? `📖 ${canto1Id}. ${canto1.name}` : `${canto1Id}. ${canto1.name}`,
+      text: canto1.active ? `📖 ${canto1Id}. ${canto1.name}` : `🔒 ${canto1Id}. ${canto1.name}`,
       callback_data: canto1.active ? `canto_${canto1Id}` : 'canto_inactive'
     };
     row.push(button1);
@@ -61,7 +61,7 @@ async function showCantos(bot, chatId) {
       const canto2Id = cantoIds[i + 1];
       const canto2 = cantos[canto2Id];
       const button2 = {
-        text: canto2.active ? `📖 ${canto2Id}. ${canto2.name}` : `${canto2Id}. ${canto2.name}`,
+        text: canto2.active ? `📖 ${canto2Id}. ${canto2.name}` : `🔒 ${canto2Id}. ${canto2.name}`,
         callback_data: canto2.active ? `canto_${canto2Id}` : 'canto_inactive'
       };
       row.push(button2);
@@ -73,7 +73,7 @@ async function showCantos(bot, chatId) {
   // Add back button
   keyboard.inline_keyboard.push([{ text: '◀️ Back to Main Menu', callback_data: 'back_main' }]);
 
-  bot.sendMessage(chatId, `📚 <b>Śrīmad Bhāgavatam - 12 Cantos</b>\n\n<i>Select a Canto to view chapters</i>\n\n<b>Note:</b> Only Canto 3 is currently available.`, {
+  bot.sendMessage(chatId, `📚 <b>Śrīmad Bhāgavatam - 12 Cantos</b>\n\n<i>Select a Canto to view chapters</i>\n\n🔒 = Unavailable (Coming Soon)\n📖 = Available\n\n<b>Currently Available:</b> Canto 3`, {
     parse_mode: 'HTML',
     reply_markup: keyboard
   });
