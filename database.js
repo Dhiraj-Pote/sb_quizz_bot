@@ -62,7 +62,7 @@ function initDatabase() {
     markUserAttempted: db.prepare('INSERT OR REPLACE INTO users (user_id, quiz_id, username, first_name, has_attempted) VALUES (?, ?, ?, ?, 1)'),
     saveResult: db.prepare('INSERT INTO results (user_id, quiz_id, username, first_name, score, total_time, user_answers) VALUES (?, ?, ?, ?, ?, ?, ?)'),
     getUserResult: db.prepare('SELECT * FROM results WHERE user_id = ? AND quiz_id = ?'),
-    getLeaderboard: db.prepare('SELECT username, first_name, score, total_time FROM results WHERE quiz_id = ? ORDER BY score DESC, total_time ASC LIMIT 10'),
+    getLeaderboard: db.prepare('SELECT username, first_name, score, total_time FROM results WHERE quiz_id = ? ORDER BY score DESC, total_time ASC'),
     startQuizSession: db.prepare('INSERT OR REPLACE INTO active_quizzes (user_id, quiz_id, current_question, score, start_time, question_start_time, user_answers) VALUES (?, ?, 0, 0, ?, ?, ?)'),
     getQuizState: db.prepare('SELECT * FROM active_quizzes WHERE user_id = ?'),
     updateQuizState: db.prepare('UPDATE active_quizzes SET current_question = ?, score = ?, question_start_time = ?, user_answers = ? WHERE user_id = ?'),
@@ -133,7 +133,7 @@ function listUsers(quizId) {
 }
 
 // Get combined leaderboard across all quizzes
-function getCombinedLeaderboard(limit = 10) {
+function getCombinedLeaderboard() {
   const query = `
     SELECT 
       user_id,
@@ -144,9 +144,8 @@ function getCombinedLeaderboard(limit = 10) {
     FROM results
     GROUP BY user_id
     ORDER BY total_score DESC, quizzes_taken DESC
-    LIMIT ?
   `;
-  return db.prepare(query).all(limit);
+  return db.prepare(query).all();
 }
 
 // Get top player (highest combined score)

@@ -1,5 +1,5 @@
 // Menu and UI handlers
-const { getQuiz, getAvailableQuizzes, getAllQuizzes } = require('./quizData');
+const { getQuiz, getAvailableQuizzes, getAllQuizzes, getCantos, getCanto, getChaptersForCanto } = require('./quizData');
 const { hasUserAttempted, getLeaderboard, getUserResult, getTopPlayer, getCombinedLeaderboard, getUserQuizIds } = require('./database');
 const { getShareableLink, escapeHtml } = require('./utils');
 
@@ -14,19 +14,138 @@ async function showMainMenu(bot, chatId) {
   
   const menuText = `🌸 <b>Śrīmad Bhāgavatam Quiz</b> 🌸\n` +
     `<i>"nityaṁ bhāgavata-sevayā"</i>\n\n` +
-    `📜 <b>Available:</b> ${quizzes.length} Quizzes\n` +
+    `� <b>Cantos:</b> 12 (Canto 3 Active)\n` +
+    `📜 <b>Chapters:</b> ${quizzes.length} Available\n` +
     topPlayerText +
-    `🔹/quizzes — Select Chapters\n` +
+    `🔹/cantos — Select Cantos\n` +
     `🔹/leaderboard — View results`;
 
   const keyboard = {
     inline_keyboard: [
-      [{ text: '📚 Browse All Quizzes', callback_data: 'browse_quizzes' }],
+      [{ text: '📚 Browse Cantos', callback_data: 'browse_cantos' }],
       [{ text: '🏆 View Leaderboard', callback_data: 'lb_combined' }]
     ]
   };
 
   bot.sendMessage(chatId, menuText, {
+    parse_mode: 'HTML',
+    reply_markup: keyboard
+  });
+}
+
+async function showCantos(bot, chatId) {
+  const cantos = getCantos();
+
+  // Create keyboard with 2 columns (like the web UI with 4 columns but adapted for Telegram)
+  const keyboard = {
+    inline_keyboard: []
+  };
+
+  // Arrange cantos in 2 columns
+  const cantoIds = Object.keys(cantos).map(Number).sort((a, b) => a - b);
+  
+  for (let i = 0; i < cantoIds.length; i += 2) {
+    const row = [];
+    
+    // First canto in the row
+    const canto1Id = cantoIds[i];
+    const canto1 = cantos[canto1Id];
+    const button1 = {
+      text: canto1.active ? `📖 ${canto1Id}. ${canto1.name}` : `${canto1Id}. ${canto1.name}`,
+      callback_data: canto1.active ? `canto_${canto1Id}` : 'canto_inactive'
+    };
+    row.push(button1);
+    
+    // Second canto in the row (if exists)
+    if (i + 1 < cantoIds.length) {
+      const canto2Id = cantoIds[i + 1];
+      const canto2 = cantos[canto2Id];
+      const button2 = {
+        text: canto2.active ? `📖 ${canto2Id}. ${canto2.name}` : `${canto2Id}. ${canto2.name}`,
+        callback_data: canto2.active ? `canto_${canto2Id}` : 'canto_inactive'
+      };
+      row.push(button2);
+    }
+    
+    keyboard.inline_keyboard.push(row);
+  }
+  
+  // Add back button
+  keyboard.inline_keyboard.push([{ text: '◀️ Back to Main Menu', callback_data: 'back_main' }]);
+
+  bot.sendMessage(chatId, `📚 <b>Śrīmad Bhāgavatam - 12 Cantos</b>\n\n<i>Select a Canto to view chapters</i>\n\n<b>Note:</b> Only Canto 3 is currently available.`, {
+    parse_mode: 'HTML',
+    reply_markup: keyboard
+  });
+}
+
+async function showCantoChapters(bot, chatId, userId, cantoId, isAdmin) {
+  const canto = getCanto(cantoId);
+  
+  if (!canto) {
+    bot.sendMessage(chatId, '⚠️ Canto not found.');
+    return;
+  }
+
+  if (!canto.active) {
+    const keyboard = {
+      inline_keyboard: [
+        [{ text: '◀️ Back to Cantos', callback_data: 'browse_cantos' }]
+      ]
+    };
+    bot.sendMessage(chatId, `🔒 <b>Canto ${cantoId}: ${canto.name}</b>\n\nThis Canto is not yet active. Please check back later!`, {
+      parse_mode: 'HTML',
+      reply_markup: keyboard
+    });
+    return;
+  }
+
+  const chapters = getChaptersForCanto(cantoId);
+
+  if (chapters.length === 0) {
+    const keyboard = {
+      inline_keyboard: [
+        [{ text: '◀️ Back to Cantos', callback_data: 'browse_cantos' }]
+      ]
+    };
+    bot.sendMessage(chatId, `⚠️ No chapters available for Canto ${cantoId}.`, {
+      parse_mode: 'HTML',
+      reply_markup: keyboard
+    });
+    return;
+  }
+
+  // Create 2-column layout for chapters
+  const keyboard = {
+    inline_keyboard: []
+  };
+
+  for (let i = 0; i < chapters.length; i += 2) {
+    const row = [];
+    
+    // First chapter
+    const chapter1 = chapters[i];
+    row.push({
+      text: `📖 Ch ${chapter1.id.split('_')[2]}`,
+      callback_data: `quiz_${chapter1.id}`
+    });
+    
+    // Second chapter (if exists)
+    if (i + 1 < chapters.length) {
+      const chapter2 = chapters[i + 1];
+      row.push({
+        text: `📖 Ch ${chapter2.id.split('_')[2]}`,
+        callback_data: `quiz_${chapter2.id}`
+      });
+    }
+    
+    keyboard.inline_keyboard.push(row);
+  }
+
+  // Add back button
+  keyboard.inline_keyboard.push([{ text: '◀️ Back to Cantos', callback_data: 'browse_cantos' }]);
+
+  bot.sendMessage(chatId, `📖 <b>Canto ${cantoId}: ${canto.name}</b>\n<i>${canto.sanskrit}</i>\n\n<b>Chapters:</b>`, {
     parse_mode: 'HTML',
     reply_markup: keyboard
   });
@@ -84,7 +203,13 @@ async function showQuizDetails(bot, chatId, userId, quizId, isAdmin) {
   
   buttons.push([{ text: '🏆 Leaderboard', callback_data: `lb_${quizId}` }]);
   buttons.push([{ text: '🔗 Share Quiz', callback_data: `share_${quizId}` }]);
-  buttons.push([{ text: '◀️ Back to Quizzes', callback_data: 'browse_quizzes' }]);
+  
+  // Extract canto ID from quizId (e.g., quiz_3_17 -> 3)
+  const quizParts = quizId.split('_');
+  const cantoId = quizParts[1];
+  const backCallback = cantoId ? `canto_${cantoId}` : 'browse_quizzes';
+  
+  buttons.push([{ text: '◀️ Back to Chapters', callback_data: backCallback }]);
 
   bot.sendMessage(chatId, detailText, {
     parse_mode: 'HTML',
@@ -205,14 +330,29 @@ async function showLeaderboard(bot, chatId, quizId) {
     ]
   };
 
-  bot.sendMessage(chatId, leaderboardText, { 
-    parse_mode: 'HTML',
-    reply_markup: keyboard
-  });
+  // Telegram message limit is 4096 chars, split if needed
+  if (leaderboardText.length > 4000) {
+    let current = `🏆 <b>Leaderboard: ${escapeHtml(quiz.title)}</b>\n\n`;
+    for (let i = 0; i < leaderboardLines.length; i++) {
+      if ((current + leaderboardLines[i] + '\n').length > 4000) {
+        await bot.sendMessage(chatId, current, { parse_mode: 'HTML' });
+        current = '';
+      }
+      current += leaderboardLines[i] + '\n';
+    }
+    if (current) {
+      await bot.sendMessage(chatId, current + `\n\n🔗 Share: ${shareLink}`, { parse_mode: 'HTML', reply_markup: keyboard });
+    }
+  } else {
+    bot.sendMessage(chatId, leaderboardText, { 
+      parse_mode: 'HTML',
+      reply_markup: keyboard
+    });
+  }
 }
 
 async function showCombinedLeaderboard(bot, chatId) {
-  const leaderboard = getCombinedLeaderboard(10);
+  const leaderboard = getCombinedLeaderboard();
 
   if (leaderboard.length === 0) {
     const keyboard = {
@@ -232,16 +372,13 @@ async function showCombinedLeaderboard(bot, chatId) {
   const leaderboardLines = leaderboard.map((entry, index) => {
     const medal = medals[index] || `${index + 1}.`;
     const name = entry.first_name || entry.username || 'Anonymous';
-    
     // Get the quiz IDs this user has taken
     const userQuizIds = getUserQuizIds(entry.user_id);
-    
     // Calculate total questions for those specific quizzes
     const totalQuestions = userQuizIds.reduce((sum, quizId) => {
       const quiz = getQuiz(quizId);
       return sum + (quiz ? quiz.questions.length : 0);
     }, 0);
-    
     return `${medal} <b>${escapeHtml(name)}</b> - ${entry.total_score}/${totalQuestions} (${entry.quizzes_taken} quizzes)`;
   });
 
@@ -255,14 +392,31 @@ async function showCombinedLeaderboard(bot, chatId) {
     ]
   };
 
-  bot.sendMessage(chatId, leaderboardText, { 
-    parse_mode: 'HTML',
-    reply_markup: keyboard
-  });
+  // Telegram message limit is 4096 chars, split if needed
+  if (leaderboardText.length > 4000) {
+    let current = `🏆 <b>Combined Leaderboard</b>\n<i>Total scores across all quizzes</i>\n\n`;
+    for (let i = 0; i < leaderboardLines.length; i++) {
+      if ((current + leaderboardLines[i] + '\n').length > 4000) {
+        await bot.sendMessage(chatId, current, { parse_mode: 'HTML' });
+        current = '';
+      }
+      current += leaderboardLines[i] + '\n';
+    }
+    if (current) {
+      await bot.sendMessage(chatId, current, { parse_mode: 'HTML', reply_markup: keyboard });
+    }
+  } else {
+    bot.sendMessage(chatId, leaderboardText, { 
+      parse_mode: 'HTML',
+      reply_markup: keyboard
+    });
+  }
 }
 
 module.exports = {
   showMainMenu,
+  showCantos,
+  showCantoChapters,
   showQuizList,
   showQuizDetails,
   showReview,

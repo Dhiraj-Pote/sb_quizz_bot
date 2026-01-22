@@ -3,7 +3,7 @@ const { ADMIN_USERNAMES } = require('./config');
 const { getQuiz, getAvailableQuizzes } = require('./quizData');
 const { hasUserAttempted, startQuizSession, getQuizState } = require('./database');
 const { getShareableLink, escapeHtml } = require('./utils');
-const { showMainMenu, showQuizList, showQuizDetails, showReview, showLeaderboard, showCombinedLeaderboard } = require('./menuHandlers');
+const { showMainMenu, showCantos, showCantoChapters, showQuizList, showQuizDetails, showReview, showLeaderboard, showCombinedLeaderboard } = require('./menuHandlers');
 const { sendQuestion, clearTimer } = require('./quizLogic');
 
 function setupCallbacks(bot) {
@@ -18,8 +18,19 @@ function setupCallbacks(bot) {
     bot.answerCallbackQuery(query.id).catch(() => {});
 
     try {
-      if (data === 'browse_quizzes') {
+      if (data === 'browse_cantos') {
+        await showCantos(bot, chatId);
+      }
+      else if (data === 'browse_quizzes') {
         await showQuizList(bot, chatId);
+      }
+      else if (data === 'canto_inactive') {
+        bot.answerCallbackQuery(query.id, { text: 'This Canto is not yet active!', show_alert: true });
+        return;
+      }
+      else if (data.startsWith('canto_')) {
+        const cantoId = parseInt(data.substring(6));
+        await showCantoChapters(bot, chatId, userId, cantoId, isAdmin);
       }
       else if (data === 'view_leaderboards') {
         const quizzes = getAvailableQuizzes();

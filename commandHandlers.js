@@ -3,7 +3,7 @@ const { ADMIN_USERNAMES } = require('./config');
 const { getQuiz, getAvailableQuizzes } = require('./quizData');
 const { clearUserData, listUsers } = require('./database');
 const { getShareableLink, escapeHtml } = require('./utils');
-const { showMainMenu, showQuizList, showQuizDetails, showLeaderboard } = require('./menuHandlers');
+const { showMainMenu, showCantos, showQuizList, showQuizDetails, showLeaderboard } = require('./menuHandlers');
 
 function setupCommands(bot) {
   // /start - Show menu or start specific quiz via deep link
@@ -20,6 +20,12 @@ function setupCommands(bot) {
     }
 
     await showMainMenu(bot, chatId);
+  });
+
+  // /cantos - Show all cantos
+  bot.onText(/\/cantos/, async (msg) => {
+    const chatId = msg.chat.id;
+    await showCantos(bot, chatId);
   });
 
   // /quizzes - List all available quizzes
