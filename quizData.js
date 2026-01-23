@@ -573,10 +573,10 @@ const QUIZZES = {
       {
         question: "What is the correct sequence of evolution of Material elements as stated in Sankhya Philosophy?",
         options: [
-          "Pradhāna → Mahat → Prakṛti → Sound (ether) → Touch (air) → Form (fire) → Taste (water) → Smell (earth)",
-          "Prakṛti → Pradhāna → Mahat → Sound (ether) → Touch (air) → Form (fire) → Taste (water) → Smell (earth)",
-          "Pradhāna → Prakṛti → Mahat → False ego → Sound (ether) → Touch (air) → Form (fire) → Taste (water) → Smell (earth)",
-          "Mahat → Prakṛti → Pradhāna → Sound (ether) → Touch (air) → Form (fire) → Taste (water) → Smell (earth)"
+          "Pradhāna → Mahat → Prakṛti → Sound → Touch → Form → Taste → Smell (earth)",
+          "Prakṛti → Pradhāna → Mahat → Sound → Touch→ Form → Taste → Smell (earth)",
+          "Pradhāna → Prakṛti → Mahat → False ego → Sound → Touch → Form → Taste → Smell (earth)",
+          "Mahat → Prakṛti → Pradhāna → Sound → Touch → Form → Taste → Smell (earth)"
         ],
         correct: 2
       },

@@ -15,7 +15,6 @@ async function showMainMenu(bot, chatId) {
   const menuText = `🌸 <b>Śrīmad Bhāgavatam Quiz</b> 🌸\n` +
     `<i>"nityaṁ bhāgavata-sevayā"</i>\n\n` +
     `� <b>Cantos:</b> 12 (Canto 3 Active)\n` +
-    `📜 <b>Chapters:</b> ${quizzes.length} Available\n` +
     topPlayerText +
     `🔹/cantos — Select Cantos\n` +
     `🔹/leaderboard — View results`;
