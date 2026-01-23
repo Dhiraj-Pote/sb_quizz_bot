@@ -123,19 +123,21 @@ async function showCantoChapters(bot, chatId, userId, cantoId, isAdmin) {
   for (let i = 0; i < chapters.length; i += 2) {
     const row = [];
     
-    // First chapter
+    // First chapter - callback should be quiz_quiz_3_17 (quiz_ prefix + quiz ID)
     const chapter1 = chapters[i];
+    const ch1Num = chapter1.id.split('_')[2];
     row.push({
-      text: `📖 Ch ${chapter1.id.split('_')[2]}`,
-      callback_data: `${chapter1.id}`
+      text: `📖 Ch ${ch1Num}`,
+      callback_data: `quiz_${chapter1.id}`
     });
     
     // Second chapter (if exists)
     if (i + 1 < chapters.length) {
       const chapter2 = chapters[i + 1];
+      const ch2Num = chapter2.id.split('_')[2];
       row.push({
-        text: `📖 Ch ${chapter2.id.split('_')[2]}`,
-        callback_data: `${chapter2.id}`
+        text: `📖 Ch ${ch2Num}`,
+        callback_data: `quiz_${chapter2.id}`
       });
     }
     
