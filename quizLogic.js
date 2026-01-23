@@ -18,7 +18,18 @@ function clearTimer(userId) {
 
 async function sendQuestion(bot, chatId, userId, quizId, questionIndex) {
   const quiz = getQuiz(quizId);
+  
+  if (!quiz) {
+    bot.sendMessage(chatId, '⚠️ Quiz data not found. Please try again.');
+    return;
+  }
+  
   const questions = quiz.questions;
+
+  if (!questions || questions.length === 0) {
+    bot.sendMessage(chatId, '⚠️ No questions found in this quiz.');
+    return;
+  }
 
   if (questionIndex >= questions.length) {
     await finishQuiz(bot, chatId, userId, quizId);
@@ -43,7 +54,7 @@ async function sendQuestion(bot, chatId, userId, quizId, questionIndex) {
 
   // Store poll info for tracking
   userPolls.set(pollMessage.poll.id, {
-    oderId: userId,
+    userId: userId,
     chatId,
     quizId,
     questionIndex,
@@ -74,7 +85,7 @@ async function handlePollAnswer(bot, pollAnswer) {
   const pollInfo = userPolls.get(pollId);
   if (!pollInfo) return;
   
-  const { chatId, quizId, questionIndex, correctAnswer, oderId: userId } = pollInfo;
+  const { chatId, quizId, questionIndex, correctAnswer, userId } = pollInfo;
   
   const state = getQuizState(userId);
   if (!state) return;
