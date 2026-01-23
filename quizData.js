@@ -3,84 +3,72 @@ const CANTOS = {
   1: {
     id: 1,
     name: 'Creation',
-    sanskrit: 'Sṛṣṭi',
     active: false,
     chapters: []
   },
   2: {
     id: 2,
     name: 'The Cosmic Manifestation',
-    sanskrit: 'Viśva-sṛjī',
     active: false,
     chapters: []
   },
   3: {
     id: 3,
     name: 'The Status Quo',
-    sanskrit: 'Sattvataḥ-samvit',
     active: true,
     chapters: [17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
   },
   4: {
     id: 4,
     name: 'The Creation of the Fourth Order',
-    sanskrit: 'Caturtha-sarga',
     active: false,
     chapters: []
   },
   5: {
     id: 5,
     name: 'The Creative Impetus',
-    sanskrit: 'Sṛjī-karaṇa',
     active: false,
     chapters: []
   },
   6: {
     id: 6,
     name: 'Prescribed Duties for Mankind',
-    sanskrit: 'Puruṣaṇ-Vitti',
     active: false,
     chapters: []
   },
   7: {
     id: 7,
     name: 'The Science of God',
-    sanskrit: 'Bhagavat-vijñāna',
     active: false,
     chapters: []
   },
   8: {
     id: 8,
     name: 'Withdrawal of the Cosmic Creations',
-    sanskrit: 'Praḷaya',
     active: false,
     chapters: []
   },
   9: {
     id: 9,
     name: 'Liberation',
-    sanskrit: 'Mukti',
     active: false,
     chapters: []
   },
   10: {
     id: 10,
     name: 'The Summum Bonum',
-    sanskrit: 'Āśraya',
     active: false,
     chapters: []
   },
   11: {
     id: 11,
     name: 'General History',
-    sanskrit: 'Samanya-Itihas',
     active: false,
     chapters: []
   },
   12: {
     id: 12,
     name: 'The Age of Deterioration',
-    sanskrit: 'Kali-yugi',
     active: false,
     chapters: []
   }

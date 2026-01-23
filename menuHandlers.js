@@ -127,7 +127,7 @@ async function showCantoChapters(bot, chatId, userId, cantoId, isAdmin) {
     const chapter1 = chapters[i];
     row.push({
       text: `📖 Ch ${chapter1.id.split('_')[2]}`,
-      callback_data: `quiz_${chapter1.id}`
+      callback_data: `${chapter1.id}`
     });
     
     // Second chapter (if exists)
@@ -135,7 +135,7 @@ async function showCantoChapters(bot, chatId, userId, cantoId, isAdmin) {
       const chapter2 = chapters[i + 1];
       row.push({
         text: `📖 Ch ${chapter2.id.split('_')[2]}`,
-        callback_data: `quiz_${chapter2.id}`
+        callback_data: `${chapter2.id}`
       });
     }
     
@@ -145,7 +145,7 @@ async function showCantoChapters(bot, chatId, userId, cantoId, isAdmin) {
   // Add back button
   keyboard.inline_keyboard.push([{ text: '◀️ Back to Cantos', callback_data: 'browse_cantos' }]);
 
-  bot.sendMessage(chatId, `📖 <b>Canto ${cantoId}: ${canto.name}</b>\n<i>${canto.sanskrit}</i>\n\n<b>Chapters:</b>`, {
+  bot.sendMessage(chatId, `📖 <b>Canto ${cantoId}: ${canto.name}</b>\n\n<b>Chapters:</b>`, {
     parse_mode: 'HTML',
     reply_markup: keyboard
   });
