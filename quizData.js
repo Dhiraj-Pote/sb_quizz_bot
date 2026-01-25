@@ -16,7 +16,7 @@ const CANTOS = {
     id: 3,
     name: 'The Status Quo',
     active: true,
-    chapters: [17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
+    chapters: [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]
   },
   4: {
     id: 4,
