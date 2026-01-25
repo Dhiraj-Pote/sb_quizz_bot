@@ -671,6 +671,115 @@ const QUIZZES = {
         correct: 3
       }
     ]
+  },
+'quiz_3_27': {
+    id: 'quiz_3_27',
+    title: 'SB Canto 3 Chapter 27',
+    description: 'Śrīmad Bhāgavatam Quiz - Canto 3 Chapter 27: Understanding Material Nature',
+    createdDate: '2025-01-25',
+    live: true,
+    questions: [
+      {
+        question: "What is the primary reason the 'indirect' yoga system fails without the 'direct' process of bhakti?",
+        options: [
+          "Sitting postures are impossible for modern humans.",
+          "It focuses too much on physical health and diet.",
+          "Success requires hearing and chanting about the Lord.",
+          "It lacks the complexity of modern scientific methods."
+        ],
+        correct: 2
+      },
+      {
+        question: "What does the term Sva-dharmeṇa specifically refer to for a liberated soul?",
+        options: [
+          "Personal mental speculation",
+          "Complete renunciation of work",
+          "Temporary social duties",
+          "Eternal servitude to God"
+        ],
+        correct: 3
+      },
+      {
+        question: "How does a Satya-dṛk (self-realized soul) view a beautiful rose?",
+        options: [
+          "As something to be rejected because it is 'material'.",
+          "As a reflection of the Lord's energy to be used in His service.",
+          "As a target for personal sense gratification and smell.",
+          "As a chemical combination with no spiritual value."
+        ],
+        correct: 1
+      },
+      {
+        question: "What happens to the 'individual' after spiritual realization?",
+        options: [
+          "The individual merges and becomes the Supreme Lord.",
+          "The individual soul is completely lost or destroyed.",
+          "The soul turns into a void without any perception.",
+          "The individual continues to exist but with purified identity."
+        ],
+        correct: 3
+      },
+      {
+        question: "In the state of Ahaṅkriyā-vimūḍhātmā, what is the actual relationship between the soul and its actions?",
+        options: [
+          "The soul is a neutral observer with no connection to the body.",
+          "The soul is a slave of the modes while claiming to be the master.",
+          "The soul is the independent designer of its deeds.",
+          "The soul becomes the Supreme Controller of material elements."
+        ],
+        correct: 1
+      },
+      {
+        question: "What does it mean when Verse 11 says the Lord is the 'eyes of the illusory energy'?",
+        options: [
+          "He is controlled by the laws of material nature.",
+          "He supervises and supports nature without being part of it.",
+          "He is a product of the five material elements.",
+          "He is blind to the activities of the conditioned souls."
+        ],
+        correct: 1
+      },
+      {
+        question: "What is the definition of a Muni (thoughtful person) in this purport?",
+        options: [
+          "Someone who lives in a forest without any human contact.",
+          "Someone who remains silent and never speaks.",
+          "Someone who speculates on different philosophical theories.",
+          "Someone always thinking of improving their service to Kṛṣṇa."
+        ],
+        correct: 3
+      },
+      {
+        question: "According to SB 3.27.1, how can a self-realized soul live inside a material body without being affected by its reactions?",
+        options: [
+          "By pretending the material body does not exist at all.",
+          "By destroying the material elements through intense fire.",
+          "By remaining apart from proprietorship, like the sun's reflection.",
+          "By physically leaving the body through mystic power."
+        ],
+        correct: 2
+      },
+      {
+        question: "Why does the 'so-called meditator' who thinks 'I am God' fail to achieve Kaivalyam (freedom) according to the purport?",
+        options: [
+          "He remains a passive slave to material urges like thirst.",
+          "He lacks the physical strength for long sitting postures.",
+          "He lives in a city instead of a secluded forest.",
+          "He hasn't studied enough Sanskrit grammar."
+        ],
+        correct: 0
+      },
+      {
+        question: "What is the 'root cause' (nimitta) that makes material bondage reappear even after deep mental speculation?",
+        options: [
+          "Forgetting the complex Sanskrit definitions.",
+          "Lack of sufficient scientific research.",
+          "Not living in a sufficiently secluded forest.",
+          "The desire to lord it over nature and envy of God."
+        ],
+        correct: 3
+      }
+    ]
   }
 };
 
