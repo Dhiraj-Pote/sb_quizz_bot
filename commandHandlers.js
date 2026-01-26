@@ -79,7 +79,7 @@ function setupCommands(bot) {
       
       keyboard.inline_keyboard.push([{ text: '◀️ Back to Main Menu', callback_data: 'back_main' }]);
       
-      bot.sendMessage(chatId, '🏆 <b>Select Leaderboard:</b>', {
+      const sent = await bot.sendMessage(chatId, '🏆 <b>Select Leaderboard:</b>', {
         parse_mode: 'HTML',
         reply_markup: keyboard
       });

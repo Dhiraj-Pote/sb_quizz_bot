@@ -3,7 +3,7 @@ const { getQuiz, getAvailableQuizzes, getAllQuizzes, getCantos, getCanto, getCha
 const { hasUserAttempted, getLeaderboard, getUserResult, getTopPlayer, getCombinedLeaderboard, getUserQuizIds } = require('./database');
 const { getShareableLink, escapeHtml } = require('./utils');
 
-async function showMainMenu(bot, chatId) {
+async function showMainMenu(bot, chatId, messageId = null) {
   const quizzes = getAvailableQuizzes();
   
   // Get top player
@@ -14,7 +14,7 @@ async function showMainMenu(bot, chatId) {
   
   const menuText = `🌸 <b>Śrīmad Bhāgavatam Quiz</b> 🌸\n` +
     `<i>"nityaṁ bhāgavata-sevayā"</i>\n\n` +
-    `� <b>Cantos:</b> 12 (Canto 3 Active)\n` +
+    ` <b>Cantos:</b> 12 (Canto 3 Active)\n` +
     topPlayerText +
     `🔹/cantos — Select Cantos\n` +
     `🔹/leaderboard — View results`;
@@ -26,13 +26,22 @@ async function showMainMenu(bot, chatId) {
     ]
   };
 
-  bot.sendMessage(chatId, menuText, {
-    parse_mode: 'HTML',
-    reply_markup: keyboard
-  });
+  if (messageId) {
+    bot.editMessageText(menuText, {
+      chat_id: chatId,
+      message_id: messageId,
+      parse_mode: 'HTML',
+      reply_markup: keyboard
+    }).catch(() => {});
+  } else {
+    bot.sendMessage(chatId, menuText, {
+      parse_mode: 'HTML',
+      reply_markup: keyboard
+    });
+  }
 }
 
-async function showCantos(bot, chatId) {
+async function showCantos(bot, chatId, messageId = null) {
   const cantos = getCantos();
 
   // Create keyboard with 2 columns (like the web UI with 4 columns but adapted for Telegram)
@@ -72,13 +81,24 @@ async function showCantos(bot, chatId) {
   // Add back button
   keyboard.inline_keyboard.push([{ text: '◀️ Back to Main Menu', callback_data: 'back_main' }]);
 
-  bot.sendMessage(chatId, `📚 <b>Śrīmad Bhāgavatam - 12 Cantos</b>\n\n<i>Select a Canto to view chapters</i>\n\n🔒 = Unavailable (Coming Soon)\n📖 = Available\n\n<b>Currently Available:</b> Canto 3`, {
-    parse_mode: 'HTML',
-    reply_markup: keyboard
-  });
+  const text = `📚 <b>Śrīmad Bhāgavatam - 12 Cantos</b>\n\n<i>Select a Canto to view chapters</i>\n\n🔒 = Unavailable (Coming Soon)\n📖 = Available\n\n<b>Currently Available:</b> Canto 3`;
+
+  if (messageId) {
+    bot.editMessageText(text, {
+      chat_id: chatId,
+      message_id: messageId,
+      parse_mode: 'HTML',
+      reply_markup: keyboard
+    }).catch(() => {});
+  } else {
+    bot.sendMessage(chatId, text, {
+      parse_mode: 'HTML',
+      reply_markup: keyboard
+    });
+  }
 }
 
-async function showCantoChapters(bot, chatId, userId, cantoId, isAdmin) {
+async function showCantoChapters(bot, chatId, userId, cantoId, isAdmin, messageId = null) {
   const canto = getCanto(cantoId);
   
   if (!canto) {
@@ -92,10 +112,21 @@ async function showCantoChapters(bot, chatId, userId, cantoId, isAdmin) {
         [{ text: '◀️ Back to Cantos', callback_data: 'browse_cantos' }]
       ]
     };
-    bot.sendMessage(chatId, `🔒 <b>Canto ${cantoId}: ${canto.name}</b>\n\nThis Canto is not yet active. Please check back later!`, {
-      parse_mode: 'HTML',
-      reply_markup: keyboard
-    });
+    const text = `🔒 <b>Canto ${cantoId}: ${canto.name}</b>\n\nThis Canto is not yet active. Please check back later!`;
+    
+    if (messageId) {
+      bot.editMessageText(text, {
+        chat_id: chatId,
+        message_id: messageId,
+        parse_mode: 'HTML',
+        reply_markup: keyboard
+      }).catch(() => {});
+    } else {
+      bot.sendMessage(chatId, text, {
+        parse_mode: 'HTML',
+        reply_markup: keyboard
+      });
+    }
     return;
   }
 
@@ -107,10 +138,21 @@ async function showCantoChapters(bot, chatId, userId, cantoId, isAdmin) {
         [{ text: '◀️ Back to Cantos', callback_data: 'browse_cantos' }]
       ]
     };
-    bot.sendMessage(chatId, `⚠️ No chapters available for Canto ${cantoId}.`, {
-      parse_mode: 'HTML',
-      reply_markup: keyboard
-    });
+    const text = `⚠️ No chapters available for Canto ${cantoId}.`;
+    
+    if (messageId) {
+      bot.editMessageText(text, {
+        chat_id: chatId,
+        message_id: messageId,
+        parse_mode: 'HTML',
+        reply_markup: keyboard
+      }).catch(() => {});
+    } else {
+      bot.sendMessage(chatId, text, {
+        parse_mode: 'HTML',
+        reply_markup: keyboard
+      });
+    }
     return;
   }
 
@@ -146,13 +188,24 @@ async function showCantoChapters(bot, chatId, userId, cantoId, isAdmin) {
   // Add back button
   keyboard.inline_keyboard.push([{ text: '◀️ Back to Cantos', callback_data: 'browse_cantos' }]);
 
-  bot.sendMessage(chatId, `📖 <b>Canto ${cantoId}: ${canto.name}</b>\n\n<b>Chapters:</b>`, {
-    parse_mode: 'HTML',
-    reply_markup: keyboard
-  });
+  const text = `📖 <b>Canto ${cantoId}: ${canto.name}</b>\n\n<b>Chapters:</b>`;
+
+  if (messageId) {
+    bot.editMessageText(text, {
+      chat_id: chatId,
+      message_id: messageId,
+      parse_mode: 'HTML',
+      reply_markup: keyboard
+    }).catch(() => {});
+  } else {
+    bot.sendMessage(chatId, text, {
+      parse_mode: 'HTML',
+      reply_markup: keyboard
+    });
+  }
 }
 
-async function showQuizList(bot, chatId) {
+async function showQuizList(bot, chatId, messageId = null) {
   const quizzes = getAvailableQuizzes();
 
   if (quizzes.length === 0) {
@@ -169,13 +222,24 @@ async function showQuizList(bot, chatId) {
   // Add back button
   keyboard.inline_keyboard.push([{ text: '◀️ Back to Main Menu', callback_data: 'back_main' }]);
 
-  bot.sendMessage(chatId, '📚 <b>All Available Quizzes</b>\n\n', {
-    parse_mode: 'HTML',
-    reply_markup: keyboard
-  });
+  const text = '📚 <b>All Available Quizzes</b>\n\n';
+
+  if (messageId) {
+    bot.editMessageText(text, {
+      chat_id: chatId,
+      message_id: messageId,
+      parse_mode: 'HTML',
+      reply_markup: keyboard
+    }).catch(() => {});
+  } else {
+    bot.sendMessage(chatId, text, {
+      parse_mode: 'HTML',
+      reply_markup: keyboard
+    });
+  }
 }
 
-async function showQuizDetails(bot, chatId, userId, quizId, isAdmin) {
+async function showQuizDetails(bot, chatId, userId, quizId, isAdmin, messageId = null) {
   const quiz = getQuiz(quizId);
   if (!quiz) {
     bot.sendMessage(chatId, '⚠️ Quiz not found.');
@@ -212,10 +276,19 @@ async function showQuizDetails(bot, chatId, userId, quizId, isAdmin) {
   
   buttons.push([{ text: '◀️ Back to Chapters', callback_data: backCallback }]);
 
-  bot.sendMessage(chatId, detailText, {
-    parse_mode: 'HTML',
-    reply_markup: { inline_keyboard: buttons }
-  });
+  if (messageId) {
+    bot.editMessageText(detailText, {
+      chat_id: chatId,
+      message_id: messageId,
+      parse_mode: 'HTML',
+      reply_markup: { inline_keyboard: buttons }
+    }).catch(() => {});
+  } else {
+    bot.sendMessage(chatId, detailText, {
+      parse_mode: 'HTML',
+      reply_markup: { inline_keyboard: buttons }
+    });
+  }
 }
 
 async function showReview(bot, chatId, userId, quizId) {
@@ -290,7 +363,7 @@ async function showReview(bot, chatId, userId, quizId) {
   }
 }
 
-async function showLeaderboard(bot, chatId, quizId) {
+async function showLeaderboard(bot, chatId, quizId, messageId = null) {
   const quiz = getQuiz(quizId);
   const leaderboard = getLeaderboard(quizId);
 
@@ -306,10 +379,21 @@ async function showLeaderboard(bot, chatId, quizId) {
       ]
     };
     
-    bot.sendMessage(chatId, `🏆 <b>Leaderboard: ${escapeHtml(quiz.title)}</b>\n\nNo results yet. Be the first!`, {
-      parse_mode: 'HTML',
-      reply_markup: keyboard
-    });
+    const text = `🏆 <b>Leaderboard: ${escapeHtml(quiz.title)}</b>\n\nNo results yet. Be the first!`;
+    
+    if (messageId) {
+      bot.editMessageText(text, {
+        chat_id: chatId,
+        message_id: messageId,
+        parse_mode: 'HTML',
+        reply_markup: keyboard
+      }).catch(() => {});
+    } else {
+      bot.sendMessage(chatId, text, {
+        parse_mode: 'HTML',
+        reply_markup: keyboard
+      });
+    }
     return;
   }
 
@@ -345,14 +429,23 @@ async function showLeaderboard(bot, chatId, quizId) {
       await bot.sendMessage(chatId, current + `\n\n🔗 Share: ${shareLink}`, { parse_mode: 'HTML', reply_markup: keyboard });
     }
   } else {
-    bot.sendMessage(chatId, leaderboardText, { 
-      parse_mode: 'HTML',
-      reply_markup: keyboard
-    });
+    if (messageId) {
+      bot.editMessageText(leaderboardText, {
+        chat_id: chatId,
+        message_id: messageId,
+        parse_mode: 'HTML',
+        reply_markup: keyboard
+      }).catch(() => {});
+    } else {
+      bot.sendMessage(chatId, leaderboardText, { 
+        parse_mode: 'HTML',
+        reply_markup: keyboard
+      });
+    }
   }
 }
 
-async function showCombinedLeaderboard(bot, chatId) {
+async function showCombinedLeaderboard(bot, chatId, messageId = null) {
   const leaderboard = getCombinedLeaderboard();
 
   if (leaderboard.length === 0) {
@@ -362,10 +455,21 @@ async function showCombinedLeaderboard(bot, chatId) {
       ]
     };
     
-    bot.sendMessage(chatId, `🏆 <b>Combined Leaderboard</b>\n\nNo results yet. Be the first to take a quiz!`, {
-      parse_mode: 'HTML',
-      reply_markup: keyboard
-    });
+    const text = `🏆 <b>Combined Leaderboard</b>\n\nNo results yet. Be the first to take a quiz!`;
+    
+    if (messageId) {
+      bot.editMessageText(text, {
+        chat_id: chatId,
+        message_id: messageId,
+        parse_mode: 'HTML',
+        reply_markup: keyboard
+      }).catch(() => {});
+    } else {
+      bot.sendMessage(chatId, text, {
+        parse_mode: 'HTML',
+        reply_markup: keyboard
+      });
+    }
     return;
   }
 
@@ -407,10 +511,19 @@ async function showCombinedLeaderboard(bot, chatId) {
       await bot.sendMessage(chatId, current, { parse_mode: 'HTML', reply_markup: keyboard });
     }
   } else {
-    bot.sendMessage(chatId, leaderboardText, { 
-      parse_mode: 'HTML',
-      reply_markup: keyboard
-    });
+    if (messageId) {
+      bot.editMessageText(leaderboardText, {
+        chat_id: chatId,
+        message_id: messageId,
+        parse_mode: 'HTML',
+        reply_markup: keyboard
+      }).catch(() => {});
+    } else {
+      bot.sendMessage(chatId, leaderboardText, { 
+        parse_mode: 'HTML',
+        reply_markup: keyboard
+      });
+    }
   }
 }
 

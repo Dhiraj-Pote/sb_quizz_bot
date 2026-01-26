@@ -9,6 +9,7 @@ const { sendQuestion, clearTimer } = require('./quizLogic');
 function setupCallbacks(bot) {
   bot.on('callback_query', async (query) => {
     const chatId = query.message.chat.id;
+    const messageId = query.message.message_id;
     const userId = query.from.id;
     const data = query.data;
     const username = query.from.username || '';
@@ -19,10 +20,10 @@ function setupCallbacks(bot) {
 
     try {
       if (data === 'browse_cantos') {
-        await showCantos(bot, chatId);
+        await showCantos(bot, chatId, messageId);
       }
       else if (data === 'browse_quizzes') {
-        await showQuizList(bot, chatId);
+        await showQuizList(bot, chatId, messageId);
       }
       else if (data === 'canto_inactive') {
         bot.answerCallbackQuery(query.id, { text: 'This Canto is not yet active!', show_alert: true });
@@ -30,7 +31,7 @@ function setupCallbacks(bot) {
       }
       else if (data.startsWith('canto_')) {
         const cantoId = parseInt(data.substring(6));
-        await showCantoChapters(bot, chatId, userId, cantoId, isAdmin);
+        await showCantoChapters(bot, chatId, userId, cantoId, isAdmin, messageId);
       }
       else if (data === 'view_leaderboards') {
         const quizzes = getAvailableQuizzes();
@@ -49,17 +50,19 @@ function setupCallbacks(bot) {
         
         keyboard.inline_keyboard.push([{ text: '◀️ Back to Main Menu', callback_data: 'back_main' }]);
         
-        bot.sendMessage(chatId, '🏆 <b>Select Leaderboard:</b>', {
+        bot.editMessageText('🏆 <b>Select Leaderboard:</b>', {
+          chat_id: chatId,
+          message_id: messageId,
           parse_mode: 'HTML',
           reply_markup: keyboard
-        });
+        }).catch(() => {});
       }
       else if (data === 'back_main') {
-        await showMainMenu(bot, chatId);
+        await showMainMenu(bot, chatId, messageId);
       }
       else if (data.startsWith('quiz_')) {
         const quizId = data.substring(5);
-        await showQuizDetails(bot, chatId, userId, quizId, isAdmin);
+        await showQuizDetails(bot, chatId, userId, quizId, isAdmin, messageId);
       }
       else if (data.startsWith('start_')) {
         const quizId = data.substring(6);
@@ -88,9 +91,9 @@ function setupCallbacks(bot) {
         const quizId = data.substring(3);
         
         if (quizId === 'combined') {
-          await showCombinedLeaderboard(bot, chatId);
+          await showCombinedLeaderboard(bot, chatId, messageId);
         } else {
-          await showLeaderboard(bot, chatId, quizId);
+          await showLeaderboard(bot, chatId, quizId, messageId);
         }
       }
       else if (data.startsWith('review_')) {
