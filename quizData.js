@@ -16,7 +16,7 @@ const CANTOS = {
     id: 3,
     name: 'The Status Quo',
     active: true,
-    chapters: [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]
+    chapters: [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]
   },
   4: {
     id: 4,
@@ -780,7 +780,86 @@ const QUIZZES = {
         correct: 3
       }
     ]
-  }
+  },
+  'quiz_3_28': {
+    id: 'quiz_3_28',
+    title: 'SB Canto 3 Chapter 28: Execution of Devotional Service',
+    description: 'Kapila’s Instructions on the Execution of Devotional Service',
+    createdDate: '2026-01-29',
+    live: true,
+    questions: [
+      {
+        question: "In order to avoid indigestion and disease, how should a yogī eat as explained in Śrīmad-Bhāgavatam (Mita-medhyādanam)?",
+        options: [
+          "He should fast completely and only drink water.",
+          "Only half of what is needed to satisfy his hunger.",
+          "As much as possible to maintain physical strength.",
+          "He should eat only at night after the sun sets."
+        ],
+        correct: 1
+      },
+      {
+        question: "Why is chanting Hare Kṛṣṇa recommended over the breathing system for this age?",
+        options: [
+          "Because the breathing system requires expensive medical equipment.",
+          "Because the breathing system is not mentioned in the Vedas.",
+          "Because it is easier to fix the mind directly on the sound of the name.",
+          "Because chanting is only a physical exercise for the tongue."
+        ],
+        correct: 2
+      },
+      {
+        question: "What acts as the 'Thunderbolt' (Vajram) to shatter the mountain of sin in the mind?",
+        options: [
+          "Reading the Vedas.",
+          "Performing Astanga Yoga.",
+          "Performing silent meditation on the 'void'.",
+          "Meditating on the lotus feet of the Supreme Lord."
+        ],
+        correct: 3
+      },
+      {
+        question: "According to Text 32, what must one do in order to be aloof from sex attraction?",
+        options: [
+          "By meditating on the benevolent smile and charming eyebrows of Lord Hari.",
+          "Forcefully withdrawing the senses from objects.",
+          "By suppressing the senses through rigid breath control and silence.",
+          "Developing a sense of disgust by meditating on the impurities of the body."
+        ],
+        correct: 0
+      },
+      {
+        question: "Where should a yogī fix their vision while meditating on the form of the Lord (Text 12)?",
+        options: [
+          "On a flame or a point of light.",
+          "On the tip of the nose.",
+          "On the space between the eyebrows.",
+          "On the ceiling of the temple."
+        ],
+        correct: 1
+      },
+      {
+        question: "What is the significance of the word darśanīyatamam in Text 16?",
+        options: [
+          "It indicates that the Lord is invisible to the common man.",
+          "It refers to the many different forms the Lord can take.",
+          "It means the Lord is so beautiful that the yogī loses the desire to see anything else.",
+          "It refers to the Lord's ability to see everything."
+        ],
+        correct: 2
+      },
+      {
+        question: "According to Text 28, what do the pearls on the Lord’s neck (which is close to the heart) symbolize?",
+        options: [
+          "The various yoga powers (siddhis).",
+          "The tears of the demigods.",
+          "The material planets.",
+          "Pure living entities (devotees) engaged in His service."
+        ],
+        correct: 3
+      }
+    ]
+}
 };
 
 function getQuiz(quizId) {
