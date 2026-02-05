@@ -16,7 +16,7 @@ const CANTOS = {
     id: 3,
     name: 'The Status Quo',
     active: true,
-    chapters: [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]
+    chapters: [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]
   },
   4: {
     id: 4,
@@ -783,7 +783,7 @@ const QUIZZES = {
   },
   'quiz_3_28': {
     id: 'quiz_3_28',
-    title: 'SB Canto 3 Chapter 28: Execution of Devotional Service',
+    title: 'SB Canto 3 Chapter 28',
     description: 'Kapila’s Instructions on the Execution of Devotional Service',
     createdDate: '2026-01-29',
     live: true,
@@ -859,7 +859,71 @@ const QUIZZES = {
         correct: 3
       }
     ]
-}
+  },
+  'quiz_3_29': {
+    id: 'quiz_3_29',
+    title: 'SB Canto 3 Chapter 29',
+    description: 'Śrīmad Bhāgavatam Quiz - Canto 3 Chapter 29: Explanation of Devotional Service by Lord Kapila',
+    createdDate: '2026-02-05',
+    live: true,
+    questions: [
+      {
+        question: "What is the technical difference between Śreyaḥ-sṛti and Saṁsṛti?",
+        options: ["One refers to the sun and the other refers to the moon.", "One is the path toward God, the other is the path of repeated birth and death.", "One is for monks and the other is for householders.", "There is no difference; they are synonyms for the same journey."],
+        correct: 1
+      },
+      {
+        question: "What defines a devotee as a 'separatist' (bhinna-dṛk) according to this chapter?",
+        options: ["He meditates on the Lord's different limbs one by one.", "He refuses to wear traditional devotional clothing.", "He sees his interests as separate from the Lord's.", "He lives in a house far away from the temple."],
+        correct: 2
+      },
+      {
+        question: "Why do devotees not strive for Ekatva (merging) as the impersonalists do?",
+        options: ["Because qualitative oneness is automatically attained through service.", "Because they are afraid of losing their physical identity.", "Because merging is considered a sinful activity in the Vedas.", "Because they prefer to stay within the material creation."],
+        correct: 0
+      },
+      {
+        question: "According to the text, why is eating vegetables considered acceptable for a devotee?",
+        options: ["Because plants do not actually have life or feelings.", "Because it is a more 'modern' and 'scientific' way of living.", "Because the Vedas state that plants do not carry any sinful reactions.", "Because they are offered to Kṛṣṇa, who accepts food from the vegetable kingdom."],
+        correct: 3
+      },
+      {
+        question: "What is the specific definition of Nātihiṁsā provided in the purport?",
+        options: ["Sacrificing animals only on specific lunar days.", "Absolute non-violence in every thought and action.", "Committing violence only as ordered or necessary.", "Forgiving enemies even when they attack."],
+        correct: 2
+      },
+      {
+        question: "What is the precise meaning of the warning Guruṣu nara-matiḥ?",
+        options: ["Thinking the Guru is an ordinary human being.", "Viewing the Guru as an avatar of Vishnu.", "Believing the Guru is superior to the scriptures.", "Following the Guru only for material gain."],
+        correct: 0
+      },
+      {
+        question: "How does the Bhāgavatam define the 'poor' (dīnānām)?",
+        options: ["Living without a permanent home or family.", "Lacking financial resources or assets.", "Belonging to a lower social or worker class.", "Lacking Kṛṣṇa consciousness and knowledge."],
+        correct: 3
+      },
+      {
+        question: "Why is a 'separatist' (bhinna-darśinaḥ) unable to attain peace of mind?",
+        options: ["He spends too much time in solitary meditation.", "He is inimical and envious toward other living entities.", "He lacks the financial means to support his lifestyle.", "He does not follow the strict rules of temple diet."],
+        correct: 1
+      },
+      {
+        question: "What is the contradiction in the term 'Daridra-nārāyaṇa' (Poor Nārāyaṇa)?",
+        options: ["Nārāyaṇa is only found in the hearts of the wealthy.", "Nārāyaṇa becomes poor when He enters an animal's body.", "Nārāyaṇa is full of all opulences and cannot be poor.", "Nārāyaṇa is a name that can only be used in temples."],
+        correct: 2
+      },
+      {
+        question: "Which three elements must be present for 'Service' to exist?",
+        options: ["High intelligence, silent meditation, and long life.", "Wealth, power, and a large social following.", "The Master, the Servant, and the Service itself.", "A temple, a priest, and a sacrificial fire."],
+        correct: 2
+      },
+      {
+        question: "What is the status of Yamarāja (the Lord of Death) in relation to Time?",
+        options: ["He is the creator and controller of Time.", "He is an imaginary figure used to frighten children.", "He is the only being who lives eternally in the material world.", "He is himself destroyed by the influence of Time."],
+        correct: 3
+      }
+    ]
+  }
 };
 
 function getQuiz(quizId) {
